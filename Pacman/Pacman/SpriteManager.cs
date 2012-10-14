@@ -22,11 +22,13 @@ namespace Pacman
             content = c;
             sheet = content.Load<Texture2D>("sprite_sheet");
             dictionary = new Dictionary<Level.EBlocks, Rectangle[]>();
-            dictionary.Add(Level.EBlocks.WALL, new Rectangle[] {new Rectangle(2, 2, 16, 16)});
-            dictionary.Add(Level.EBlocks.DOOR, new Rectangle[] {new Rectangle(22, 2, 16, 16)});
-            dictionary.Add(Level.EBlocks.PIX, new Rectangle[] {new Rectangle(42, 2, 16, 16)});
-            dictionary.Add(Level.EBlocks.SPAWN, new Rectangle[] {new Rectangle(62, 2, 16, 16)});
-            dictionary.Add(Level.EBlocks.ENNEMY, new Rectangle[] {new Rectangle(82, 2, 16, 16)});
+            dictionary.Add(Level.EBlocks.WALL, new Rectangle[] {new Rectangle(2, 2, 8, 8)});
+            dictionary.Add(Level.EBlocks.DOOR, new Rectangle[] {new Rectangle(22, 2, 8, 8)});
+            dictionary.Add(Level.EBlocks.PIX, new Rectangle[] {new Rectangle(42, 2, 8, 8)});
+            dictionary.Add(Level.EBlocks.SPAWN, new Rectangle[] {new Rectangle(62, 2, 8, 8)});
+            dictionary.Add(Level.EBlocks.ENNEMY, new Rectangle[] {new Rectangle(82, 2, 8, 8)});
+            dictionary.Add(Level.EBlocks.EMPTY, new Rectangle[] { new Rectangle(2, 22, 8, 8) });
+            dictionary.Add(Level.EBlocks.PALLETS, new Rectangle[] { new Rectangle(22, 22, 8, 8) });
         }
 
         public void begin()
@@ -41,8 +43,8 @@ namespace Pacman
 
         public void drawAtIt(uint x, uint y, Level.EBlocks b)
         {
-            pos.X = x * 16;
-            pos.Y = y * 16;
+            pos.X = x * 8;
+            pos.Y = y * 8;
             sb.Draw(sheet, pos, dictionary[b][0], Color.White);
         }
     }

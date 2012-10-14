@@ -8,7 +8,7 @@ namespace Pacman
 {
     class Level : AScene
     {
-        public enum EBlocks {PIX, DOOR, WALL, ENNEMY, SPAWN };
+        public enum EBlocks {PIX, DOOR, WALL, ENNEMY, SPAWN, EMPTY, PALLETS };
         private uint lvl;
         private LevelManager lm;
 
