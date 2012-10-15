@@ -123,6 +123,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <EmbeddedResource Include="map.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PacmanContent\PacmanContent.contentproj">

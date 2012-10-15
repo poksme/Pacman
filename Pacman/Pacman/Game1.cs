@@ -18,6 +18,7 @@ namespace Pacman
     {
         GraphicsDeviceManager graphics;
         private SceneManager sm;
+        private Boolean isExiting = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,8 +44,16 @@ namespace Pacman
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content, graphics.GraphicsDevice));
-
+            try
+            {
+                sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content, graphics.GraphicsDevice));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                isExiting = true;
+                this.Exit();
+            }
             // TODO: use this.Content to load your game content here
         }
 
@@ -65,7 +74,7 @@ namespace Pacman
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || this.isExiting)
                 this.Exit();
             else
                 sm.update(gameTime);
