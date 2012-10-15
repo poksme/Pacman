@@ -35,11 +35,17 @@ namespace Pacman
         {
             for (uint i = 0; i < lm.getLevelHeight(lvl); ++i)
                 for (uint j = 0; j < lm.getLevelWidth(lvl); ++j)
-                    spm_.drawAtIt(j, i, lm.getBlock(lvl, j, i));
+                {
+                    if (lm.getBlock(lvl, j, i) == EBlocks.PIX)
+                        spm_.drawAtIt(j, i, SpriteManager.ESprite.PIX);
+                    else if (lm.getBlock(lvl, j, i) == EBlocks.PALLETS)
+                        spm_.drawAtIt(j, i, SpriteManager.ESprite.PALLETS);
+                }
         }
 
         public override void draw()
         {
+            spm_.drawBackground();
             drawMap();
         }
 

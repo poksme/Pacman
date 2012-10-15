@@ -41,50 +41,6 @@ namespace Pacman
                     "X.XXXXXXXXXX.XX.XXXXXXXXXX.X",
                     "X..........................X",
                     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                },
-                // LEVEL TWO
-                new string[] {
-                    "AAAAAAAAAAAAAAAAAAAAAAA",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "AAAAAAAAAAAAAAAAAAAAAAAA"
-                },
-                // LEVEL THREE
-                new string[] {
-                    "AAAAAAAAAAAAAAAAAAAAAAA",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "A                     A",
-                    "AAAAAAAAAAAAAAAAAAAAAAAA"
                 }
             };
         Dictionary<char, Level.EBlocks> dictionary;
@@ -107,15 +63,11 @@ namespace Pacman
         public int getLevelWidth(uint lvl)
         {
             return maps[lvl][0].Length;
-            //return 17;
-            //return maps[lvl, 0].Length;
         }
 
         public int getLevelHeight(uint lvl)
         {
             return maps[lvl].Length;
-            //return 17;
-            //return maps.GetLength((int)lvl);
         }
     }
 }
