@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AScene.cs" />
+    <Compile Include="Hero.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Pause.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="SceneManager.cs" />
+    <Compile Include="Sprite.cs" />
     <Compile Include="SpriteManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pacman
 {
@@ -10,7 +11,7 @@ namespace Pacman
     {
         public Pause(SceneManager sm, SpriteManager spm) : base(sm, spm)
         {
-
+            lastState = GamePad.GetState(PlayerIndex.One);
         }
 
         public override void load()
@@ -20,6 +21,16 @@ namespace Pacman
 
         public override void update(GameTime gt)
         {
+            currentState = GamePad.GetState(PlayerIndex.One);
+
+            if (currentState.IsConnected)
+            {
+                if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
+                {
+                    scm_.setScene(SceneManager.EScene.LEVEL);
+                }
+            }
+            lastState = currentState;
         }
 
         public override void draw()
