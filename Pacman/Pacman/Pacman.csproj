@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AScene.cs" />
+    <Compile Include="Character.cs" />
     <Compile Include="Hero.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelManager.cs" />

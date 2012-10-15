@@ -17,9 +17,10 @@ namespace Pacman
         Rectangle bgPos;
         Vector2 pos = Vector2.Zero;
         ContentManager content;
+        protected float scale = 1f;
         public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y };
 
-        public SpriteManager(SpriteBatch spriteBatch, ContentManager c)
+        public SpriteManager(SpriteBatch spriteBatch, ContentManager c, GraphicsDevice gd)
         {
             sb = spriteBatch;
             content = c;
@@ -55,7 +56,7 @@ namespace Pacman
 
         public void begin()
         {
-            sb.Begin();
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null, null, Matrix.Identity);
         }
 
         public void end()
@@ -65,23 +66,35 @@ namespace Pacman
 
         public void drawAtIt(uint x, uint y, SpriteManager.ESprite b)
         {
-            pos.X = x * 8 - 4;
-            pos.Y = y * 8 + 20;
-            sb.Draw(sheet, pos, sheetPos[b][0], Color.White);
+            pos.X = (x * 8 - 4) * scale;
+            pos.Y = (y * 8 + 20) * scale;
+            sb.Draw(sheet, pos, sheetPos[b][0], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
         public void drawSprite(Sprite sp)
         {
             if (sp.drawn == false)
             {
-                sb.Draw(sheet, sp.pos, sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)], Color.White);
+                sp.pos.X *= scale;
+                sp.pos.Y *= scale;
+                sb.Draw(sheet, sp.pos, sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 sp.drawn = true;
             }
         }
 
+        public void zoomIn()
+        {
+            scale *= 1.01f;
+        }
+
+        public void zoomOut()
+        {
+            scale *= 0.99f;
+        }
+
         public void drawBackground()
         {
-            sb.Draw(background, Vector2.Zero, bgPos, Color.White);
+            sb.Draw(background, Vector2.Zero, bgPos, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
     }
 }

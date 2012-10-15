@@ -43,7 +43,7 @@ namespace Pacman
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content));
+            sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content, graphics.GraphicsDevice));
 
             // TODO: use this.Content to load your game content here
         }

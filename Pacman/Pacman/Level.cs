@@ -27,7 +27,7 @@ namespace Pacman
             B = new Sprite(new Vector2(220, 200), SpriteManager.ESprite.B);
             X = new Sprite(new Vector2(240, 200), SpriteManager.ESprite.X);
             Y = new Sprite(new Vector2(260, 200), SpriteManager.ESprite.Y);
-            h = new Hero();
+            h = new Hero(Character.EOrientation.NEUTRAL);
         }
         public void setLevel(uint level)
         {
@@ -50,10 +50,12 @@ namespace Pacman
                 if (currentState.Buttons.A == ButtonState.Pressed)
                 {
                     A.drawn = false;
+                    spm_.zoomOut();
                 }
                 if (currentState.Buttons.B == ButtonState.Pressed)
                 {
                     B.drawn = false;
+                    spm_.zoomIn();
                 }
                 if (currentState.Buttons.X == ButtonState.Pressed)
                 {
@@ -67,21 +69,59 @@ namespace Pacman
                 {
                     scm_.setScene(SceneManager.EScene.PAUSE);
                 }
-                if (currentState.DPad.Left == ButtonState.Pressed)
+
+
+                if (currentState.DPad.Left == ButtonState.Pressed || h.getOrientation() == Character.EOrientation.LEFT)
                 {
-                    h.sp.id = SpriteManager.ESprite.PACLEFT;
+                    if (!lm.pixelIsWall(h.getX() - 5, h.getY()) &&
+                        !lm.pixelIsWall(h.getX() - 5, h.getY() - 3) &&
+                        !lm.pixelIsWall(h.getX() - 5, h.getY() + 3))
+                    {
+                    h.setOrientation(Character.EOrientation.LEFT);
+                    lm.pixelEat(h.getX(), h.getY());
+                    h.setBlocked(false);
+                    }
+                    else if (h.getOrientation() == Character.EOrientation.LEFT)
+                        h.setBlocked(true);
                 }
-                if (currentState.DPad.Right == ButtonState.Pressed)
+                if (currentState.DPad.Right == ButtonState.Pressed || h.getOrientation() == Character.EOrientation.RIGHT)
                 {
-                    h.sp.id = SpriteManager.ESprite.PACRIGHT;
+                    if (!lm.pixelIsWall(h.getX() + 5, h.getY()) && 
+                        !lm.pixelIsWall(h.getX() + 5, h.getY() + 3) && 
+                        !lm.pixelIsWall(h.getX() + 5, h.getY() - 3))
+                    {
+                    h.setOrientation(Character.EOrientation.RIGHT);
+                    lm.pixelEat(h.getX(), h.getY());
+                    h.setBlocked(false);
+                    }
+                    else if (h.getOrientation() == Character.EOrientation.RIGHT)
+                        h.setBlocked(true);
                 }
-                if (currentState.DPad.Up == ButtonState.Pressed)
+                if (currentState.DPad.Up == ButtonState.Pressed || h.getOrientation() == Character.EOrientation.UP)
                 {
-                    h.sp.id = SpriteManager.ESprite.PACUP;
+                    if (!lm.pixelIsWall(h.getX(), h.getY() - 5) &&
+                        !lm.pixelIsWall(h.getX() - 3, h.getY() - 5) &&
+                        !lm.pixelIsWall(h.getX() + 3, h.getY() - 5))
+                    {
+                    h.setOrientation(Character.EOrientation.UP);
+                    lm.pixelEat(h.getX(), h.getY());
+                    h.setBlocked(false);
+                    }
+                    else if (h.getOrientation() == Character.EOrientation.UP)
+                        h.setBlocked(true);
                 }
-                if (currentState.DPad.Down == ButtonState.Pressed)
+                if (currentState.DPad.Down == ButtonState.Pressed || h.getOrientation() == Character.EOrientation.DOWN)
                 {
-                    h.sp.id = SpriteManager.ESprite.PACDOWN;
+                    if (!lm.pixelIsWall(h.getX(), h.getY() + 5) &&
+                        !lm.pixelIsWall(h.getX() + 3, h.getY() + 5) &&
+                        !lm.pixelIsWall(h.getX() - 3, h.getY() + 5))
+                    {
+                    h.setOrientation(Character.EOrientation.DOWN);
+                    lm.pixelEat(h.getX(), h.getY());
+                    h.setBlocked(false);
+                    }
+                    else if (h.getOrientation() == Character.EOrientation.DOWN)
+                        h.setBlocked(true);
                 }
                 //// Update previous gamepad state.
                 //previousGamePadState = currentState;
@@ -90,12 +130,12 @@ namespace Pacman
         }
         private void drawMap()
         {
-            for (uint i = 0; i < lm.getLevelHeight(lvl); ++i)
-                for (uint j = 0; j < lm.getLevelWidth(lvl); ++j)
+            for (uint i = 0; i < lm.getHeight(); ++i)
+                for (uint j = 0; j < lm.getWidth(); ++j)
                 {
-                    if (lm.getBlock(lvl, j, i) == EBlocks.PIX)
+                    if (lm.isPix(j, i))
                         spm_.drawAtIt(j, i, SpriteManager.ESprite.PIX);
-                    else if (lm.getBlock(lvl, j, i) == EBlocks.PALLETS)
+                    else if (lm.isPallet(j, i))
                         spm_.drawAtIt(j, i, SpriteManager.ESprite.PALLETS);
                 }
         }
