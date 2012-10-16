@@ -131,6 +131,7 @@ namespace Pacman
             
                 m.update(gt);
             }
+            spm_.update(h);
         }
 
         private void drawMap()

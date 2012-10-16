@@ -10,7 +10,7 @@ namespace Pacman
     class SceneManager
     {
         //DEFINITION
-        public enum EScene { LEVEL, PAUSE };
+        public enum EScene { LEGEND, LEVEL, PAUSE };
 
         //VARS
         private Dictionary <EScene, AScene> scenes;
@@ -21,8 +21,10 @@ namespace Pacman
             scenes = new Dictionary<EScene,AScene>();
             scenes.Add(EScene.LEVEL, new Play(this, spm));
             scenes.Add(EScene.PAUSE, new Pause(this, spm));
+            scenes.Add(EScene.LEGEND, new Legend(this, spm));
             spm_ = spm;
             scenes[EScene.LEVEL].activate();
+            scenes[EScene.LEGEND].activate();
         }
 
         public void draw()
@@ -42,6 +44,8 @@ namespace Pacman
 
         public void activateScene(EScene e)
         {
+            if (e == EScene.LEVEL)
+                scenes[EScene.LEGEND].activate();
             scenes[e].activate();
         }
 

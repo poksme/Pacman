@@ -12,12 +12,19 @@ namespace Pacman
     {
         SpriteBatch sb;
         Texture2D sheet;
+        Texture2D alphaSheet;
         Dictionary<SpriteManager.ESprite, Rectangle[]> sheetPos;
+        Dictionary<char, Rectangle> font;
         Texture2D background;
         Rectangle bgPos;
         Vector2 pos = Vector2.Zero;
         GraphicsDevice device;
         ContentManager content;
+        Vector2 pacPosition = Vector2.Zero;
+
+        Texture2D blackTex;
+        Rectangle blackRec;
+
         protected float scale = 2f;
         public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y,
         BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, DEADGHOST};
@@ -28,8 +35,14 @@ namespace Pacman
             content = c;
             device = gd;
             sheet = content.Load<Texture2D>("sprite_sheet");
+            alphaSheet = content.Load<Texture2D>("pixelfont");
             sheetPos = new Dictionary<SpriteManager.ESprite, Rectangle[]>();
+            font = new Dictionary<char, Rectangle>();
 
+
+            blackTex = new Texture2D(gd, 1, 1);
+            blackTex.SetData(new Color[] { new Color(30, 30, 30)  });
+            blackRec = new Rectangle(0, 0, 200, 800);
             #region DICTIONARY DEFINITIONS
             #region ORIENTATION
             sheetPos.Add(SpriteManager.ESprite.PACNEUTRAL, new Rectangle[] { new Rectangle(42, 2, 16, 16) });
@@ -58,6 +71,22 @@ namespace Pacman
             #endregion
             #endregion
 
+            #region FONT DEFINITION
+            char[] tmp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!-".ToCharArray();
+            int it = 0;
+            foreach (char cr in tmp)
+            {
+                font.Add(cr, new Rectangle(it * 8, 7, 8, 7));
+                it++;
+            }
+            tmp = "0123456789 ".ToCharArray();
+            it = 0;
+            foreach (char cr in tmp)
+            {
+                font.Add(cr, new Rectangle(it * 8, 0, 8, 7));
+                it++;
+            }
+            #endregion
             background = content.Load<Texture2D>("background");
             bgPos = new Rectangle(0, 0, 224, 288);
         }
@@ -76,8 +105,16 @@ namespace Pacman
         {
             //pos.X = (x * 8 - 4) * scale;
             //pos.Y = (y * 8 + 20) * scale;
-            pos.X = (x * 8 - 4) * scale + (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
-            pos.Y = (y * 8 + 20) * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+            if (bgPos.Width * scale < device.Viewport.Height )
+            {
+                pos.X = (x * 8 - 4) * scale + ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
+                pos.Y = (y * 8 + 20) * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+            }
+            else
+            {
+                pos.X = (x * 8 - 4) * scale + ((device.Viewport.Width + blackRec.Width) / 2) - pacPosition.X * scale;
+                pos.Y = (y * 8 + 20) * scale + (device.Viewport.Height / 2) - pacPosition.Y * scale;
+            }
             sb.Draw(sheet, pos, sheetPos[b][0], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
@@ -87,10 +124,18 @@ namespace Pacman
             {
                 //sp.pos.X *= scale;
                 //sp.pos.Y *= scale;
-                //pos.X = sp.pos.X + (device.Viewport.Width / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Width / 2) * scale;
+                //pos.X = sp.pos.X + ((device.Viewport.Width - blackRec.Width) / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Width / 2) * scale;
                 //pos.Y = sp.pos.Y + (device.Viewport.Height / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Height / 2) * scale;
-                pos.X = sp.pos.X * scale + (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
-                pos.Y = sp.pos.Y * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+                if (bgPos.Width * scale < device.Viewport.Height )
+                {
+                    pos.X = sp.pos.X * scale + ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
+                    pos.Y = sp.pos.Y * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+                }
+                else
+                {
+                    pos.X = sp.pos.X * scale + ((device.Viewport.Width + blackRec.Width) / 2) - pacPosition.X * scale;
+                    pos.Y = sp.pos.Y * scale + (device.Viewport.Height / 2) - pacPosition.Y * scale;
+                }
                 sb.Draw(sheet, pos, sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 sp.drawn = true;
             }
@@ -98,19 +143,64 @@ namespace Pacman
 
         public void zoomIn()
         {
-            scale *= 1.01f;
+            if (scale < 6)
+                scale *= 1.01f;
+            else
+                scale = 6;
         }
 
         public void zoomOut()
         {
-            scale *= 0.99f;
+            if (scale > 2)
+                scale *= 0.99f;
+            else
+                scale = 2;
+        }
+
+        public void drawText(String s, Vector2 pos)
+        {
+            char[] tmp = s.ToUpper().ToCharArray();
+            foreach (char c in tmp)
+            {
+                sb.Draw(alphaSheet, pos, font[c], Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+                pos.X += font[c].Width * 2; 
+            }
+        }
+
+        public void centerDrawText(String s)
+        {
+            drawText(s, new Vector2(device.Viewport.Width / 2 - (8 * s.Length), device.Viewport.Height / 2 - 3));
         }
 
         public void drawBackground()
         {
-            pos.X = (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
-            pos.Y = (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+            if (bgPos.Width * scale < device.Viewport.Height )
+            {
+                pos.X = ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
+                pos.Y = (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+            }
+            else
+            {
+                pos.X = (((device.Viewport.Width + blackRec.Width) / 2) - pacPosition.X * scale);
+                pos.Y = ((device.Viewport.Height / 2) - pacPosition.Y * scale);
+            }
             sb.Draw(background, pos, bgPos, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        }
+
+        public void drawLegend()
+        {
+            sb.Draw(blackTex, Vector2.Zero, blackRec, Color.White);
+        }
+
+        public void update(Hero h)
+        {
+            pacPosition.X = h.getX() + 8;
+            pacPosition.Y = h.getY() + 8;
+        }
+
+        internal void vanillaDraw(ESprite eSprite, Vector2 textPos)
+        {
+            sb.Draw(sheet, textPos, sheetPos[eSprite][0], Color.White, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
         }
     }
 }

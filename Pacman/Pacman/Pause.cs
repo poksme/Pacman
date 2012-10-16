@@ -36,6 +36,7 @@ namespace Pacman
 
         public override void draw()
         {
+            spm_.centerDrawText("Pause!");
         }
 
         public override void unload()
