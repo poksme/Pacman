@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Pacman
+namespace Pacman 
 {
     class LevelManager
     {
@@ -76,10 +76,14 @@ namespace Pacman
             maze[i][j] = ' ';
         }
 
-        public void pixelEat(float x, float y)
+        public bool pixelEat(float x, float y)
         {
             if (maze[(uint)(y) / 8][(int)(x) / 8] == '.' || maze[(uint)(y) / 8][(int)(x) / 8] == 'O')
-            maze[(uint)(y) / 8][(int)(x) / 8] = ' ';
+            {
+                maze[(uint)(y) / 8][(int)(x) / 8] = ' ';
+                return true;
+            }
+            return false;
         }
 
         public bool directionFree(float x, float y, ACharacter.EOrientation ort)

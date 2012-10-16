@@ -111,6 +111,7 @@
     <Compile Include="ACharacter.cs" />
     <Compile Include="Blinky.cs" />
     <Compile Include="Hero.cs" />
+    <Compile Include="InputManager.cs" />
     <Compile Include="Play.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Pause.cs" />

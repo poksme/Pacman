@@ -16,8 +16,9 @@ namespace Pacman
         Texture2D background;
         Rectangle bgPos;
         Vector2 pos = Vector2.Zero;
+        GraphicsDevice device;
         ContentManager content;
-        protected float scale = 1f;
+        protected float scale = 2f;
         public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y,
         BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, DEADGHOST};
 
@@ -25,7 +26,7 @@ namespace Pacman
         {
             sb = spriteBatch;
             content = c;
-
+            device = gd;
             sheet = content.Load<Texture2D>("sprite_sheet");
             sheetPos = new Dictionary<SpriteManager.ESprite, Rectangle[]>();
 
@@ -73,8 +74,10 @@ namespace Pacman
 
         public void drawAtIt(uint x, uint y, SpriteManager.ESprite b)
         {
-            pos.X = (x * 8 - 4) * scale;
-            pos.Y = (y * 8 + 20) * scale;
+            //pos.X = (x * 8 - 4) * scale;
+            //pos.Y = (y * 8 + 20) * scale;
+            pos.X = (x * 8 - 4) * scale + (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
+            pos.Y = (y * 8 + 20) * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
             sb.Draw(sheet, pos, sheetPos[b][0], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
@@ -82,9 +85,13 @@ namespace Pacman
         {
             if (sp.drawn == false)
             {
-                sp.pos.X *= scale;
-                sp.pos.Y *= scale;
-                sb.Draw(sheet, sp.pos, sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                //sp.pos.X *= scale;
+                //sp.pos.Y *= scale;
+                //pos.X = sp.pos.X + (device.Viewport.Width / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Width / 2) * scale;
+                //pos.Y = sp.pos.Y + (device.Viewport.Height / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Height / 2) * scale;
+                pos.X = sp.pos.X * scale + (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
+                pos.Y = sp.pos.Y * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+                sb.Draw(sheet, pos, sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)], Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 sp.drawn = true;
             }
         }
@@ -101,7 +108,9 @@ namespace Pacman
 
         public void drawBackground()
         {
-            sb.Draw(background, Vector2.Zero, bgPos, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            pos.X = (device.Viewport.Width / 2) - (bgPos.Width / 2) * scale;
+            pos.Y = (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
+            sb.Draw(background, pos, bgPos, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
     }
 }

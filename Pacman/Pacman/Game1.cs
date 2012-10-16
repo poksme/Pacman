@@ -24,6 +24,10 @@ namespace Pacman
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.Exiting += OnExitingUp;
+            this.graphics.PreferredBackBufferWidth = 1280;
+            this.graphics.PreferredBackBufferHeight = 800;
+
+            this.graphics.IsFullScreen = false;
         }
 
         /// <summary>

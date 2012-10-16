@@ -16,6 +16,7 @@ namespace Pacman
         protected TimeSpan TimePerFrame;
         protected Dictionary<ACharacter.EOrientation, SpriteManager.ESprite> ortToSp;
         protected Boolean blocked;
+        protected Rectangle hitBox;
         private SpriteManager spm;
 
         public ACharacter(SpriteManager s)
@@ -26,6 +27,7 @@ namespace Pacman
             blocked = true;
             ortToSp = new Dictionary<EOrientation, SpriteManager.ESprite>();
             spm = s;
+            hitBox = new Rectangle((int)pos.X, (int)pos.Y, 16, 16);
         }
 
         public void setOrientation(EOrientation ort)
@@ -100,6 +102,13 @@ namespace Pacman
                 }
                 animate(gt);
             }
+            hitBox.X = (int)pos.X;
+            hitBox.Y = (int)pos.Y;
+        }
+
+        public Boolean touches(ACharacter o)
+        {
+            return hitBox.Intersects(o.hitBox);
         }
     }
 }
