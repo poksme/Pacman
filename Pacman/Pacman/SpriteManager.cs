@@ -18,7 +18,8 @@ namespace Pacman
         Vector2 pos = Vector2.Zero;
         ContentManager content;
         protected float scale = 1f;
-        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y };
+        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y,
+        BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, DEADGHOST};
 
         public SpriteManager(SpriteBatch spriteBatch, ContentManager c, GraphicsDevice gd)
         {
@@ -35,6 +36,12 @@ namespace Pacman
             sheetPos.Add(SpriteManager.ESprite.PACRIGHT, new Rectangle[] { new Rectangle(2, 22, 16, 16), new Rectangle(22, 22, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.PACUP, new Rectangle[] { new Rectangle(2, 42, 16, 16), new Rectangle(22, 42, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.PACDOWN, new Rectangle[] { new Rectangle(2, 62, 16, 16), new Rectangle(22, 62, 16, 16) });
+
+            sheetPos.Add(SpriteManager.ESprite.BLINKYUP, new Rectangle[] { new Rectangle(2, 82, 16, 16), new Rectangle(22, 82, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.BLINKYDOWN, new Rectangle[] { new Rectangle(42, 82, 16, 16), new Rectangle(62, 82, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.BLINKYLEFT, new Rectangle[] { new Rectangle(82, 82, 16, 16), new Rectangle(102, 82, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.BLINKYRIGHT, new Rectangle[] { new Rectangle(122, 82, 16, 16), new Rectangle(142, 82, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.DEADGHOST, new Rectangle[] { new Rectangle(2, 162, 16, 16), new Rectangle(22, 162, 16, 16) });
             #endregion
 
             #region LOOT

@@ -108,9 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AScene.cs" />
-    <Compile Include="Character.cs" />
+    <Compile Include="ACharacter.cs" />
+    <Compile Include="Blinky.cs" />
     <Compile Include="Hero.cs" />
-    <Compile Include="Level.cs" />
+    <Compile Include="Play.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Pause.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

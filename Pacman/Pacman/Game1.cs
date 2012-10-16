@@ -23,6 +23,7 @@ namespace Pacman
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.Exiting += OnExitingUp;
         }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace Pacman
                 Console.WriteLine(e.Message);
                 isExiting = true;
                 this.Exit();
+                Console.WriteLine("END EXCEPTION");
             }
             // TODO: use this.Content to load your game content here
         }
@@ -73,15 +75,20 @@ namespace Pacman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+            // TODO: Add your update logic here
+            Console.WriteLine("BEGIN UPDATE");
+            
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || this.isExiting)
                 this.Exit();
             else
                 sm.update(gameTime);
+        }
 
-            // TODO: Add your update logic here
-
-            base.Update(gameTime);
+        protected void OnExitingUp(object sender, EventArgs args)
+        {
+            Console.WriteLine("HEllo, im quiting");
         }
 
         /// <summary>

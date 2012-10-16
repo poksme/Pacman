@@ -17,13 +17,13 @@ namespace Pacman
         {
             try
             {
-                using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Pacman.map.txt")))
-                {
-                    String[] tmp = Regex.Split(sr.ReadToEnd(), "\r\n");
+                StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Pacman.map.txt"));
+                
+                    String[] tmp = Regex.Split(sr.ReadToEnd(), Environment.NewLine);
                     maze = new char[tmp.Length][];
                     for (int i = 0; i < tmp.Length; ++i)
                         maze[i] = tmp[i].ToCharArray();
-                }
+                
             }
             catch (Exception e)
             {
@@ -80,6 +80,32 @@ namespace Pacman
         {
             if (maze[(uint)(y) / 8][(int)(x) / 8] == '.' || maze[(uint)(y) / 8][(int)(x) / 8] == 'O')
             maze[(uint)(y) / 8][(int)(x) / 8] = ' ';
+        }
+
+        public bool directionFree(float x, float y, ACharacter.EOrientation ort)
+        {
+            switch (ort)
+            {
+                case ACharacter.EOrientation.LEFT:
+                    return (!pixelIsWall(x - 5, y) &&
+                            !pixelIsWall(x - 5, y - 3) &&
+                            !pixelIsWall(x - 5, y + 3));
+                case ACharacter.EOrientation.RIGHT:
+                    return (!pixelIsWall(x + 5, y) &&
+                            !pixelIsWall(x + 5, y + 3) &&
+                            !pixelIsWall(x + 5, y - 3));
+                case ACharacter.EOrientation.UP:
+                    return (!pixelIsWall(x, y - 5) &&
+                            !pixelIsWall(x - 3, y - 5) &&
+                            !pixelIsWall(x + 3, y - 5));
+                case ACharacter.EOrientation.DOWN:
+                    return (!pixelIsWall(x, y + 5) &&
+                            !pixelIsWall(x + 3, y + 5) &&
+                            !pixelIsWall(x - 3, y + 5));
+                default:
+                    break;
+            }
+            return false;
         }
     }
 }

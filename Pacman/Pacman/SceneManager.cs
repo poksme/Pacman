@@ -9,48 +9,51 @@ namespace Pacman
 {
     class SceneManager
     {
+        //DEFINITION
         public enum EScene { LEVEL, PAUSE };
 
-        // VARS
-        private EScene it;
-        private uint lvl;
-        private AScene[] scenes;
+        //VARS
+        private Dictionary <EScene, AScene> scenes;
         private SpriteManager spm_;
 
         public SceneManager(SpriteManager spm)
         {
-            it = SceneManager.EScene.LEVEL;
-            lvl = 0;
-            scenes = new AScene[] { new Level(this, spm, lvl), new Pause(this, spm) };
+            scenes = new Dictionary<EScene,AScene>();
+            scenes.Add(EScene.LEVEL, new Play(this, spm));
+            scenes.Add(EScene.PAUSE, new Pause(this, spm));
             spm_ = spm;
+            scenes[EScene.LEVEL].activate();
         }
 
         public void draw()
         {
             spm_.begin();
-            scenes[(uint)it].draw();
+            foreach (var pair in scenes)
+                if (pair.Value.isActivated())
+                    pair.Value.draw();
             spm_.end();
         }
         public void update(GameTime gt)
         {
-            scenes[(uint)it].update(gt);
+            foreach (var pair in scenes)
+                if (pair.Value.isActivated())
+                    pair.Value.update(gt);
         }
 
-        public void setScene(SceneManager.EScene n)
+        public void activateScene(EScene e)
         {
-            it = n;
+            scenes[e].activate();
         }
 
-        public bool changeLevel(uint level)
+        public void desactivateScene(EScene e)
         {
-            Level tmp = (scenes[0] as Level);
-            if (tmp != null)
-            {
-                tmp.setLevel(level);
-                lvl = level;
-                return true;
-            }
-            return false;
+            scenes[e].desactivate();
         }
+        public void desactivateAll()
+        {
+            foreach (var pair in scenes)
+                pair.Value.desactivate();
+        }
+
     }
 }

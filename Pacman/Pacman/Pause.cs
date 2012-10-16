@@ -27,7 +27,8 @@ namespace Pacman
             {
                 if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
                 {
-                    scm_.setScene(SceneManager.EScene.LEVEL);
+                    scm_.desactivateAll();
+                    scm_.activateScene(SceneManager.EScene.LEVEL);
                 }
             }
             lastState = currentState;
