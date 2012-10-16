@@ -25,8 +25,13 @@ namespace Pacman
         Texture2D blackTex;
         Rectangle blackRec;
 
+        Texture2D titleTex;
+        Rectangle titleRec;
+
+        private bool follow;
+
         protected float scale = 2f;
-        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y,
+        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y, START,
         BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, DEADGHOST};
 
         public SpriteManager(SpriteBatch spriteBatch, ContentManager c, GraphicsDevice gd)
@@ -38,11 +43,14 @@ namespace Pacman
             alphaSheet = content.Load<Texture2D>("pixelfont");
             sheetPos = new Dictionary<SpriteManager.ESprite, Rectangle[]>();
             font = new Dictionary<char, Rectangle>();
-
+            follow = false;
 
             blackTex = new Texture2D(gd, 1, 1);
-            blackTex.SetData(new Color[] { new Color(30, 30, 30)  });
-            blackRec = new Rectangle(0, 0, 200, 800);
+            blackTex.SetData(new Color[] { new Color(30, 30, 30, 225)  });
+            blackRec = new Rectangle(0, 0, 200, 210);
+
+            titleTex = content.Load<Texture2D>("Title");
+            titleRec = new Rectangle(0, 0, 182, 34);
             #region DICTIONARY DEFINITIONS
             #region ORIENTATION
             sheetPos.Add(SpriteManager.ESprite.PACNEUTRAL, new Rectangle[] { new Rectangle(42, 2, 16, 16) });
@@ -68,6 +76,7 @@ namespace Pacman
             sheetPos.Add(SpriteManager.ESprite.B, new Rectangle[] { new Rectangle(162, 262, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.X, new Rectangle[] { new Rectangle(102, 262, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.Y, new Rectangle[] { new Rectangle(122, 262, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.START, new Rectangle[] { new Rectangle(182, 262, 16, 16) });
             #endregion
             #endregion
 
@@ -79,7 +88,7 @@ namespace Pacman
                 font.Add(cr, new Rectangle(it * 8, 7, 8, 7));
                 it++;
             }
-            tmp = "0123456789 ".ToCharArray();
+            tmp = "0123456789() ".ToCharArray();
             it = 0;
             foreach (char cr in tmp)
             {
@@ -105,7 +114,9 @@ namespace Pacman
         {
             //pos.X = (x * 8 - 4) * scale;
             //pos.Y = (y * 8 + 20) * scale;
-            if (bgPos.Width * scale < device.Viewport.Height )
+
+            //if (bgPos.Width * scale < device.Viewport.Height )
+            if (!follow)
             {
                 pos.X = (x * 8 - 4) * scale + ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
                 pos.Y = (y * 8 + 20) * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
@@ -126,7 +137,9 @@ namespace Pacman
                 //sp.pos.Y *= scale;
                 //pos.X = sp.pos.X + ((device.Viewport.Width - blackRec.Width) / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Width / 2) * scale;
                 //pos.Y = sp.pos.Y + (device.Viewport.Height / 2) - (sheetPos[sp.id][Math.Min(sp.step, sheetPos[sp.id].Length - 1)].Height / 2) * scale;
-                if (bgPos.Width * scale < device.Viewport.Height )
+
+                //if (bgPos.Width * scale < device.Viewport.Height )
+                if (!follow)
                 {
                     pos.X = sp.pos.X * scale + ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
                     pos.Y = sp.pos.Y * scale + (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
@@ -167,14 +180,15 @@ namespace Pacman
             }
         }
 
-        public void centerDrawText(String s)
+        public void centerDrawText(String s, int xOffset = 0, int yOffset = 0)
         {
-            drawText(s, new Vector2(device.Viewport.Width / 2 - (8 * s.Length), device.Viewport.Height / 2 - 3));
+            drawText(s, new Vector2(device.Viewport.Width / 2 - (8 * s.Length) + xOffset, device.Viewport.Height / 2 - 3 + yOffset));
         }
 
         public void drawBackground()
         {
-            if (bgPos.Width * scale < device.Viewport.Height )
+            //if (bgPos.Width * scale < device.Viewport.Height )
+            if (!follow)
             {
                 pos.X = ((device.Viewport.Width + blackRec.Width) / 2) - (bgPos.Width / 2) * scale;
                 pos.Y = (device.Viewport.Height / 2) - (bgPos.Height / 2) * scale;
@@ -198,9 +212,38 @@ namespace Pacman
             pacPosition.Y = h.getY() + 8;
         }
 
-        internal void vanillaDraw(ESprite eSprite, Vector2 textPos)
+        internal void vanillaDraw(ESprite eSprite, Vector2 textPos, SpriteEffects effectFlag = SpriteEffects.None)
         {
-            sb.Draw(sheet, textPos, sheetPos[eSprite][0], Color.White, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
+            sb.Draw(sheet, textPos, sheetPos[eSprite][0], Color.White, 0f, Vector2.Zero, 2, effectFlag, 0f);
+        }
+
+        public void toggleFollow()
+        {
+            follow = !follow;
+        }
+
+        internal bool isFollowing()
+        {
+            return follow;
+        }
+
+        internal void drawTitle()
+        {
+            pos.X = (device.Viewport.Width / 2) - (titleRec.Width);
+            pos.Y = (device.Viewport.Height / 2) - (titleRec.Height);
+            sb.Draw(titleTex, pos, titleRec, Color.White, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
+        }
+
+        internal Vector2 getCenter()
+        {
+            pos.X = device.Viewport.Width / 2;
+            pos.Y = device.Viewport.Height / 2;
+            return pos;
+        }
+
+        internal void scaleInit()
+        {
+            scale = 2;
         }
     }
 }

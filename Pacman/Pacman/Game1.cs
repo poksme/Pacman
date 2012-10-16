@@ -23,7 +23,7 @@ namespace Pacman
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.Exiting += OnExitingUp;
+            //this.Exiting += OnExitingUp;
             this.graphics.PreferredBackBufferWidth = 1280;
             this.graphics.PreferredBackBufferHeight = 800;
 
@@ -58,7 +58,7 @@ namespace Pacman
                 Console.WriteLine(e.Message);
                 isExiting = true;
                 this.Exit();
-                Console.WriteLine("END EXCEPTION");
+                //Console.WriteLine("END EXCEPTION");
             }
             // TODO: use this.Content to load your game content here
         }
@@ -81,19 +81,18 @@ namespace Pacman
         {
             base.Update(gameTime);
             // TODO: Add your update logic here
-            Console.WriteLine("BEGIN UPDATE");
             
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || this.isExiting)
+            if (this.isExiting || sm.isExiting())
                 this.Exit();
             else
                 sm.update(gameTime);
         }
 
-        protected void OnExitingUp(object sender, EventArgs args)
-        {
-            Console.WriteLine("HEllo, im quiting");
-        }
+        //protected void OnExitingUp(object sender, EventArgs args)
+        //{
+        //    Console.WriteLine("HEllo, im quiting");
+        //}
 
         /// <summary>
         /// This is called when the game should draw itself.

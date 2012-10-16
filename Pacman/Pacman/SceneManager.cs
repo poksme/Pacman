@@ -10,11 +10,12 @@ namespace Pacman
     class SceneManager
     {
         //DEFINITION
-        public enum EScene { LEGEND, LEVEL, PAUSE };
+        public enum EScene {TITLE, LEGEND, LEVEL, PAUSE };
 
         //VARS
         private Dictionary <EScene, AScene> scenes;
         private SpriteManager spm_;
+        private bool exit_;
 
         public SceneManager(SpriteManager spm)
         {
@@ -22,9 +23,12 @@ namespace Pacman
             scenes.Add(EScene.LEVEL, new Play(this, spm));
             scenes.Add(EScene.PAUSE, new Pause(this, spm));
             scenes.Add(EScene.LEGEND, new Legend(this, spm));
+            scenes.Add(EScene.TITLE, new TitleScreen(this, spm));
             spm_ = spm;
-            scenes[EScene.LEVEL].activate();
-            scenes[EScene.LEGEND].activate();
+            scenes[EScene.TITLE].activate();
+            exit_ = false;
+            //scenes[EScene.LEVEL].activate();
+            //scenes[EScene.LEGEND].activate();
         }
 
         public void draw()
@@ -59,5 +63,20 @@ namespace Pacman
                 pair.Value.desactivate();
         }
 
+
+        internal void initScene(EScene e)
+        {
+            scenes[e].unload();
+            scenes[e].load();
+        }
+        internal void exit()
+        {
+            exit_ = true;
+        }
+
+        internal bool isExiting()
+        {
+            return exit_;
+        }
     }
 }

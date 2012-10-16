@@ -24,9 +24,14 @@ namespace Pacman
 
         public Play(SceneManager sm, SpriteManager spm) : base(sm, spm)
         {
+            load();
+        }
+
+        public override void load()
+        {
             lastState = GamePad.GetState(PlayerIndex.One);
             lm = new LevelManager();
-            directions = new Dictionary<ACharacter.EOrientation,ButtonState>();
+            directions = new Dictionary<ACharacter.EOrientation, ButtonState>();
             directions.Add(ACharacter.EOrientation.UP, ButtonState.Released);
             directions.Add(ACharacter.EOrientation.DOWN, ButtonState.Released);
             directions.Add(ACharacter.EOrientation.LEFT, ButtonState.Released);
@@ -37,16 +42,11 @@ namespace Pacman
             //X = new Sprite(new Vector2(240, 200), SpriteManager.ESprite.X);
             //Y = new Sprite(new Vector2(260, 200), SpriteManager.ESprite.Y);
             #endregion
-            h = new Hero(spm);
+            h = new Hero(spm_);
             monsters = new ACharacter[] {
-                new Blinky(spm)
+                new Blinky(spm_)
             };
             monsters[0].setBlocked(false);
-        }
-
-        public override void load()
-        {
-
         }
 
         private void move()
@@ -94,10 +94,10 @@ namespace Pacman
                 //{
                 //    X.drawn = false;
                 //}
-                //if (currentState.Buttons.Y == ButtonState.Pressed)
-                //{
-                //    Y.drawn = false;
-                //}
+                if (currentState.Buttons.Y == ButtonState.Pressed && lastState.Buttons.Y == ButtonState.Released)
+                {
+                    spm_.toggleFollow();
+                }
                 #endregion
                 if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
                 {
@@ -125,7 +125,7 @@ namespace Pacman
                     else
                     {
                         scm_.desactivateAll();
-                        scm_.activateScene(SceneManager.EScene.PAUSE);
+                        scm_.activateScene(SceneManager.EScene.TITLE);
                     }
                 }
             
@@ -164,7 +164,7 @@ namespace Pacman
 
         public override void unload()
         {
-
+            spm_.scaleInit();
         }
     }
 }

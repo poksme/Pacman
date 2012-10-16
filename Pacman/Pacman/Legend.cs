@@ -34,19 +34,37 @@ namespace Pacman
         public override void draw()
         {
             spm_.drawLegend();
+
             textPos.X = 10;
-            textPos.Y = 200;
+            textPos.Y = 10;
+            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos);
+            textPos.X += 40;
+            textPos.Y += 10;
+            spm_.drawText("Pause", textPos);
+
+            textPos.X = 10;
+            textPos.Y += 40;
             spm_.vanillaDraw(SpriteManager.ESprite.A, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Zoom out", textPos);
 
             textPos.X = 10;
-            textPos.Y = 250;
+            textPos.Y += 40;
             spm_.vanillaDraw(SpriteManager.ESprite.B, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Zoom in", textPos);
+
+            textPos.X = 10;
+            textPos.Y += 40;
+            spm_.vanillaDraw(SpriteManager.ESprite.Y, textPos);
+            textPos.X += 40;
+            textPos.Y += 10;
+            if (spm_.isFollowing())
+                spm_.drawText("Unfollow", textPos);
+            else
+                spm_.drawText("Follow", textPos);
         }
 
         public override void unload()

@@ -17,7 +17,7 @@ namespace Pacman
             ortToSp.Add(EOrientation.UP, SpriteManager.ESprite.BLINKYUP);
             ortToSp.Add(EOrientation.DOWN, SpriteManager.ESprite.BLINKYDOWN);
             ortToSp.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.DEADGHOST);
-            pos = new Vector2(113, 92);
+            pos = new Vector2(113, 140);
             sp = new Sprite(pos, ortToSp[orientation]);
             orientation = EOrientation.LEFT;
         }
