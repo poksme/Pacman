@@ -31,8 +31,12 @@ namespace Pacman
         private bool follow;
 
         protected float scale = 2f;
-        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y, START,
-        BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, DEADGHOST};
+        public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y, START, 
+        EYES_LEFT, EYES_RIGHT, EYES_DOWN, EYES_UP,
+        BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, FRIGHTGHOST,
+        INKYUP, INKYDOWN, INKYLEFT, INKYRIGHT,
+        CLYDEUP, CLYDEDOWN, CLYDELEFT, CLYDERIGHT,
+        PINKYUP, PINKYDOWN, PINKYLEFT, PINKYRIGHT };
 
         public SpriteManager(SpriteBatch spriteBatch, ContentManager c, GraphicsDevice gd)
         {
@@ -52,7 +56,7 @@ namespace Pacman
             titleTex = content.Load<Texture2D>("Title");
             titleRec = new Rectangle(0, 0, 182, 34);
             #region DICTIONARY DEFINITIONS
-            #region ORIENTATION
+            #region CHARACTERS
             sheetPos.Add(SpriteManager.ESprite.PACNEUTRAL, new Rectangle[] { new Rectangle(42, 2, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.PACLEFT, new Rectangle[] { new Rectangle(2, 2, 16, 16), new Rectangle(22, 2, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.PACRIGHT, new Rectangle[] { new Rectangle(2, 22, 16, 16), new Rectangle(22, 22, 16, 16) });
@@ -63,7 +67,27 @@ namespace Pacman
             sheetPos.Add(SpriteManager.ESprite.BLINKYDOWN, new Rectangle[] { new Rectangle(42, 82, 16, 16), new Rectangle(62, 82, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.BLINKYLEFT, new Rectangle[] { new Rectangle(82, 82, 16, 16), new Rectangle(102, 82, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.BLINKYRIGHT, new Rectangle[] { new Rectangle(122, 82, 16, 16), new Rectangle(142, 82, 16, 16) });
-            sheetPos.Add(SpriteManager.ESprite.DEADGHOST, new Rectangle[] { new Rectangle(2, 162, 16, 16), new Rectangle(22, 162, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.FRIGHTGHOST, new Rectangle[] { new Rectangle(2, 162, 16, 16), new Rectangle(22, 162, 16, 16) });
+
+            sheetPos.Add(SpriteManager.ESprite.INKYUP, new Rectangle[] { new Rectangle(2, 122, 16, 16), new Rectangle(22, 122, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.INKYDOWN, new Rectangle[] { new Rectangle(42, 122, 16, 16), new Rectangle(62, 122, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.INKYLEFT, new Rectangle[] { new Rectangle(82, 122, 16, 16), new Rectangle(102, 122, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.INKYRIGHT, new Rectangle[] { new Rectangle(122, 122, 16, 16), new Rectangle(142, 122, 16, 16) });
+
+            sheetPos.Add(SpriteManager.ESprite.CLYDEUP, new Rectangle[] { new Rectangle(2, 142, 16, 16), new Rectangle(22, 142, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.CLYDEDOWN, new Rectangle[] { new Rectangle(42, 142, 16, 16), new Rectangle(62, 142, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.CLYDELEFT, new Rectangle[] { new Rectangle(82, 142, 16, 16), new Rectangle(102, 142, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.CLYDERIGHT, new Rectangle[] { new Rectangle(122, 142, 16, 16), new Rectangle(142, 142, 16, 16) });
+
+            sheetPos.Add(SpriteManager.ESprite.PINKYUP, new Rectangle[] { new Rectangle(2, 102, 16, 16), new Rectangle(22, 102, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.PINKYDOWN, new Rectangle[] { new Rectangle(42, 102, 16, 16), new Rectangle(62, 102, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.PINKYLEFT, new Rectangle[] { new Rectangle(82, 102, 16, 16), new Rectangle(102, 102, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.PINKYRIGHT, new Rectangle[] { new Rectangle(122, 102, 16, 16), new Rectangle(142, 102, 16, 16) });
+
+            sheetPos.Add(SpriteManager.ESprite.EYES_LEFT, new Rectangle[] { new Rectangle(42, 202, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.EYES_RIGHT, new Rectangle[] { new Rectangle(62, 202, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.EYES_UP, new Rectangle[] { new Rectangle(2, 202, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.EYES_DOWN, new Rectangle[] { new Rectangle(22, 202, 16, 16) });
             #endregion
 
             #region LOOT

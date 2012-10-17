@@ -78,5 +78,10 @@ namespace Pacman
         {
             return exit_;
         }
+
+        public int getBonus()
+        {
+            return (scenes[EScene.LEVEL] as Play).getBonus();
+        }
     }
 }

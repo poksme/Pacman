@@ -110,10 +110,12 @@
     <Compile Include="AScene.cs" />
     <Compile Include="ACharacter.cs" />
     <Compile Include="Blinky.cs" />
+    <Compile Include="Clyde.cs" />
     <Compile Include="Hero.cs" />
     <Compile Include="Inky.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Legend.cs" />
+    <Compile Include="Pinky.cs" />
     <Compile Include="Play.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="Pause.cs" />

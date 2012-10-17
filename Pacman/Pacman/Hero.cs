@@ -9,6 +9,8 @@ namespace Pacman
     class Hero : ACharacter
     {
         private TimeSpan power;
+        private int pix = 0;
+        private int bonus = 0;
         public Hero(SpriteManager s):base(s)
         {
             ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.PACLEFT);
@@ -29,12 +31,27 @@ namespace Pacman
         public void setPowerUp()
         {
             power = new TimeSpan(0, 0, 6);
+            bonus += 500;
         }
 
         public override void update(GameTime gt)
         {
             base.update(gt);
             power -= gt.ElapsedGameTime;
+        }
+
+        internal void addBonus()
+        {
+            bonus += 100;
+            pix += 1;
+        }
+        public int getBonus()
+        {
+            return bonus;
+        }
+        public bool won()
+        {
+            return (pix >= 240);
         }
     }
 }

@@ -9,10 +9,14 @@ namespace Pacman
 {
     class Play : AScene
     {
-        public enum EBlocks {PIX, DOOR, WALL, ENNEMY, SPAWN, EMPTY, PALLETS };
+        //LEVEL
         private LevelManager lm;
+
+        //CHARACTERS
         private Hero h;
         private ACharacter[] monsters;
+
+        //DIRECTIONNAL INPUTS
         private Dictionary<ACharacter.EOrientation, ButtonState> directions;
 
         public Play(SceneManager sm, SpriteManager spm) : base(sm, spm)
@@ -32,7 +36,9 @@ namespace Pacman
             h = new Hero(spm_);
             monsters = new ACharacter[] {
                 new Blinky(spm_),
-                new Inky(spm_)
+                new Inky(spm_),
+                new Clyde(spm_),
+                new Pinky(spm_)
             };
             monsters[0].setBlocked(false);
         }
@@ -50,8 +56,10 @@ namespace Pacman
                     if (lm.directionFree(h.getX(), h.getY(), pair.Key))
                     {
                         h.setOrientation(pair.Key);
-                        if (lm.pixelEat(h.getX(), h.getY()))
+                        if (lm.pixelPowerEat(h.getX(), h.getY()))
                             h.setPowerUp();
+                        else if (lm.pixelEat(h.getX(), h.getY()))
+                            h.addBonus();
                         h.setBlocked(false);
                     }
                     else if (h.getOrientation() == pair.Key)
@@ -108,9 +116,9 @@ namespace Pacman
                 {
                     if (h.poweredUp())
                     {
-
+                        m.setDead();
                     }
-                    else
+                    else if (!m.isDead())
                     {
                         scm_.desactivateAll();
                         scm_.activateScene(SceneManager.EScene.TITLE);
@@ -155,6 +163,10 @@ namespace Pacman
         public override void unload()
         {
             spm_.scaleInit();
+        }
+        public int getBonus()
+        {
+            return h.getBonus();
         }
     }
 }

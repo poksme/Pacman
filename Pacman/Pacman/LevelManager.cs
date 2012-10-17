@@ -63,6 +63,9 @@ namespace Pacman
 
         public Boolean pixelIsWall(float x, float y)
         {
+            if (x < 0)
+                x = 220;
+            x = x % 220;
             return (maze[(uint)(y) / 8][(uint)(x) / 8] == 'X');
         }
 
@@ -78,7 +81,7 @@ namespace Pacman
 
         public bool pixelEat(float x, float y)
         {
-            if (maze[(uint)(y) / 8][(int)(x) / 8] == '.' || maze[(uint)(y) / 8][(int)(x) / 8] == 'O')
+            if (maze[(uint)(y) / 8][(int)(x) / 8] == '.')
             {
                 maze[(uint)(y) / 8][(int)(x) / 8] = ' ';
                 return true;
@@ -144,6 +147,16 @@ namespace Pacman
             if (Math.Abs(x) > Math.Abs(y))
                 return x > 0 ? ACharacter.EOrientation.LEFT : ACharacter.EOrientation.RIGHT;
             return y > 0 ? ACharacter.EOrientation.UP : ACharacter.EOrientation.DOWN;
+        }
+
+        internal bool pixelPowerEat(float x, float y)
+        {
+            if (maze[(uint)(y) / 8][(int)(x) / 8] == 'O')
+            {
+                maze[(uint)(y) / 8][(int)(x) / 8] = ' ';
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -65,6 +65,10 @@ namespace Pacman
                 spm_.drawText("Unfollow", textPos);
             else
                 spm_.drawText("Follow", textPos);
+
+            textPos.X = 10;
+            textPos.Y = 770;
+            spm_.drawText("Score " + scm_.getBonus(), textPos);
         }
 
         public override void unload()

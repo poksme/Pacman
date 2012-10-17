@@ -20,6 +20,7 @@ namespace Pacman
         private SpriteManager spm;
         protected bool intersection;
         protected EOrientation destination;
+        bool dead;
 
         public ACharacter(SpriteManager s)
         {
@@ -32,6 +33,7 @@ namespace Pacman
             intersection = false;
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, 16, 16);
             destination = EOrientation.UP;
+            dead = false;
         }
 
         public void setOrientation(EOrientation ort)
@@ -80,19 +82,29 @@ namespace Pacman
         {
             if (!blocked)
             {
-                sp.id = ortToSp[orientation];
+                if (!dead)
+                    sp.id = ortToSp[orientation];
                 switch (orientation)
                 {
                     case (EOrientation.LEFT):
-                        pos.X = pos.X - 1;
+                        if (dead)
+                            sp.id = SpriteManager.ESprite.EYES_LEFT;
+                        if ((pos.X = pos.X - 1) < 0)
+                            pos.X = 220;
                         break;
                     case (EOrientation.RIGHT):
-                        pos.X = pos.X + 1;
+                        if (dead)
+                            sp.id = SpriteManager.ESprite.EYES_RIGHT;
+                        pos.X = (pos.X + 1) % 220;
                         break;
                     case (EOrientation.UP):
+                        if (dead)
+                            sp.id = SpriteManager.ESprite.EYES_UP;
                         pos.Y = pos.Y - 1;
                         break;
                     case (EOrientation.DOWN):
+                        if (dead)
+                            sp.id = SpriteManager.ESprite.EYES_DOWN;
                         pos.Y = pos.Y + 1;
                         break;
                     default:
@@ -117,6 +129,16 @@ namespace Pacman
         internal void setDirection(EOrientation eOrientation)
         {
             destination = eOrientation;
+        }
+
+        public void setDead()
+        {
+            dead = true;
+        }
+
+        internal bool isDead()
+        {
+            return dead;
         }
     }
 }
