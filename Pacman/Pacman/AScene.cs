@@ -11,14 +11,16 @@ namespace Pacman
     {
     protected SceneManager scm_;
     protected SpriteManager spm_;
+    protected SoundManager som_;
     protected GamePadState currentState;
     protected GamePadState lastState;
     private Boolean activated;
 
-    public AScene (SceneManager scm, SpriteManager spm)
+    public AScene(SceneManager scm, SpriteManager spm, SoundManager som)
     {
         scm_ = scm;
         spm_ = spm;
+        som_ = som;
     }
     public Boolean isActivated()
     {

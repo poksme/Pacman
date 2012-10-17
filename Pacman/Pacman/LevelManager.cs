@@ -17,12 +17,16 @@ namespace Pacman
         {
             try
             {
-                StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Pacman.map.txt"));
+                System.IO.Stream stream = TitleContainer.OpenStream("map.txt");
+                System.IO.StreamReader sr = new System.IO.StreamReader(stream);
+                //StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Pacman.map.txt"));
                 
                     String[] tmp = Regex.Split(sr.ReadToEnd(), Environment.NewLine);
                     maze = new char[tmp.Length][];
                     for (int i = 0; i < tmp.Length; ++i)
                         maze[i] = tmp[i].ToCharArray();
+
+                    sr.Close();
                 
             }
             catch (Exception e)

@@ -12,7 +12,8 @@ namespace Pacman
     {
                 private Vector2 textPos;
                 private SceneManager sm_;
-        public WinScreen(SceneManager sm, SpriteManager spm) : base(sm, spm)
+                public WinScreen(SceneManager sm, SpriteManager spm, SoundManager som)
+                    : base(sm, spm, som)
         {
             lastState = GamePad.GetState(PlayerIndex.One);
             sm_ = sm;
@@ -26,7 +27,8 @@ namespace Pacman
         public override void update(GameTime gt)
         {
             currentState = GamePad.GetState(PlayerIndex.One);
-
+            //currentState = cur;
+            //lastState = old;
             if (currentState.IsConnected)
             {
                 if (currentState.Buttons.B == ButtonState.Pressed && lastState.Buttons.B == ButtonState.Released)

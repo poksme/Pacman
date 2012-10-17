@@ -12,9 +12,9 @@ namespace Pacman
     {
         private Vector2 textPos;
 
-        public Pause(SceneManager sm, SpriteManager spm) : base(sm, spm)
+        public Pause(SceneManager sm, SpriteManager spm, SoundManager som)
+            : base(sm, spm, som)
         {
-            lastState = GamePad.GetState(PlayerIndex.One);
         }
 
         public override void load()
@@ -25,7 +25,8 @@ namespace Pacman
         public override void update(GameTime gt)
         {
             currentState = GamePad.GetState(PlayerIndex.One);
-
+            //currentState = cur;
+            //lastState = old;
             if (currentState.IsConnected)
             {
                 if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
@@ -43,7 +44,6 @@ namespace Pacman
                 {
                     scm_.desactivateAll();
                     scm_.exit();
-                    //scm_.activateScene(SceneManager.EScene.TITLE);
                 }
             }
             lastState = currentState;

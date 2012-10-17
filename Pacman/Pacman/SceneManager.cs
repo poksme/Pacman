@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pacman
 {
@@ -16,22 +17,24 @@ namespace Pacman
         private Dictionary <EScene, AScene> scenes;
         private SpriteManager spm_;
         private SoundManager som_;
+        protected GamePadState currentState;
+        protected GamePadState lastState;
         private bool exit_;
 
         public SceneManager(SpriteManager spm, SoundManager som)
         {
             scenes = new Dictionary<EScene,AScene>();
-            scenes.Add(EScene.LEVEL, new Play(this, spm));
-            scenes.Add(EScene.PAUSE, new Pause(this, spm));
-            scenes.Add(EScene.LEGEND, new Legend(this, spm));
-            scenes.Add(EScene.TITLE, new TitleScreen(this, spm));
-            scenes.Add(EScene.WIN, new WinScreen(this, spm));
+            scenes.Add(EScene.LEVEL, new Play(this, spm, som));
+            scenes.Add(EScene.PAUSE, new Pause(this, spm, som));
+            scenes.Add(EScene.LEGEND, new Legend(this, spm, som));
+            scenes.Add(EScene.TITLE, new TitleScreen(this, spm, som));
+            scenes.Add(EScene.WIN, new WinScreen(this, spm, som));
             spm_ = spm;
             som_ = som;
             activateScene(EScene.TITLE);
             exit_ = false;
-            //scenes[EScene.LEVEL].activate();
-            //scenes[EScene.LEGEND].activate();
+            lastState = GamePad.GetState(PlayerIndex.One);
+            currentState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void draw()
@@ -54,8 +57,6 @@ namespace Pacman
             if (e == EScene.LEVEL)
                 scenes[EScene.LEGEND].activate();
             scenes[e].activate();
-            if (e == EScene.TITLE)
-                som_.play(SoundManager.ESound.BEGIN);
         }
 
         public void desactivateScene(EScene e)

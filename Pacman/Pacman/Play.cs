@@ -20,7 +20,8 @@ namespace Pacman
         //DIRECTIONNAL INPUTS
         private Dictionary<ACharacter.EOrientation, ButtonState> directions;
 
-        public Play(SceneManager sm, SpriteManager spm) : base(sm, spm)
+        public Play(SceneManager sm, SpriteManager spm, SoundManager som)
+            : base(sm, spm, som)
         {
             load();
         }
@@ -60,7 +61,10 @@ namespace Pacman
                         if (lm.pixelPowerEat(h.getX(), h.getY()))
                             h.setPowerUp();
                         else if (lm.pixelEat(h.getX(), h.getY()))
+                        {
+                            //som_.play(SoundManager.ESound.CHOMP);
                             h.addBonus();
+                        }
                         h.setBlocked(false);
                     }
                     else if (h.getOrientation() == pair.Key)
@@ -73,7 +77,8 @@ namespace Pacman
         public override void update(GameTime gt)
         {
             currentState = GamePad.GetState(PlayerIndex.One);
-
+            //currentState = cur;
+            //lastState = old;
             if (currentState.IsConnected)
             {
                 #region BUTTONSTATE
@@ -86,6 +91,7 @@ namespace Pacman
                 #endregion
                 if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
                 {
+                    som_.play(SoundManager.ESound.PAUSE);
                     scm_.desactivateAll();
                     scm_.activateScene(SceneManager.EScene.PAUSE);
                 }

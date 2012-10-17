@@ -11,8 +11,8 @@ namespace Pacman
     {
         private Vector2 textPos;
 
-        public Legend(SceneManager scm, SpriteManager spm)
-            : base(scm, spm)
+        public Legend(SceneManager scm, SpriteManager spm, SoundManager som)
+            : base(scm, spm, som)
         {
             lastState = GamePad.GetState(PlayerIndex.One);
             textPos = Vector2.Zero;
@@ -25,10 +25,8 @@ namespace Pacman
 
         public override void update(GameTime gt)
         {
-            currentState = GamePad.GetState(PlayerIndex.One);
-
-
-            lastState = currentState;
+            //currentState = cur;
+            //lastState = old;
         }
 
         public override void draw()

@@ -5,3 +5,7 @@ Content\pixelfont.xnb
 Content\Title.xnb
 Content\pacman_chomp.xnb
 Content\pacman_beginning.xnb
+Content\pacman_death.xnb
+Content\pacman_eatghost.xnb
+Content\pacman_win.xnb
+Content\pacman_eatfruit.xnb

@@ -9,10 +9,11 @@ namespace Pacman
 {
     class TitleScreen : AScene
     {
-        public TitleScreen(SceneManager sm, SpriteManager spm_)
-            : base(sm, spm_)
+        public TitleScreen(SceneManager sm, SpriteManager spm_, SoundManager som)
+            : base(sm, spm_, som)
         {
             lastState = GamePad.GetState(PlayerIndex.One);
+            som_.play(SoundManager.ESound.BEGIN);
         }
 
         public override void load()
@@ -21,6 +22,8 @@ namespace Pacman
 
         public override void update(GameTime gt)
         {
+            //currentState = cur;
+            //lastState = old;
             currentState = GamePad.GetState(PlayerIndex.One);
 
             if (currentState.IsConnected)
