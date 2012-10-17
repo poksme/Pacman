@@ -33,7 +33,7 @@ namespace Pacman
         protected float scale = 2f;
         public enum ESprite { PACUP, PACDOWN, PACLEFT, PACRIGHT, PACNEUTRAL, PIX, PALLETS, A, B, X, Y, START, 
         EYES_LEFT, EYES_RIGHT, EYES_DOWN, EYES_UP,
-        BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, FRIGHTGHOST,
+        BLINKYUP, BLINKYDOWN, BLINKYLEFT, BLINKYRIGHT, FRIGHTGHOST, FRIGHT_ENDING,
         INKYUP, INKYDOWN, INKYLEFT, INKYRIGHT,
         CLYDEUP, CLYDEDOWN, CLYDELEFT, CLYDERIGHT,
         PINKYUP, PINKYDOWN, PINKYLEFT, PINKYRIGHT };
@@ -67,7 +67,9 @@ namespace Pacman
             sheetPos.Add(SpriteManager.ESprite.BLINKYDOWN, new Rectangle[] { new Rectangle(42, 82, 16, 16), new Rectangle(62, 82, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.BLINKYLEFT, new Rectangle[] { new Rectangle(82, 82, 16, 16), new Rectangle(102, 82, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.BLINKYRIGHT, new Rectangle[] { new Rectangle(122, 82, 16, 16), new Rectangle(142, 82, 16, 16) });
+
             sheetPos.Add(SpriteManager.ESprite.FRIGHTGHOST, new Rectangle[] { new Rectangle(2, 162, 16, 16), new Rectangle(22, 162, 16, 16) });
+            sheetPos.Add(SpriteManager.ESprite.FRIGHT_ENDING, new Rectangle[] { new Rectangle(42, 162, 16, 16), new Rectangle(62, 162, 16, 16) });
 
             sheetPos.Add(SpriteManager.ESprite.INKYUP, new Rectangle[] { new Rectangle(2, 122, 16, 16), new Rectangle(22, 122, 16, 16) });
             sheetPos.Add(SpriteManager.ESprite.INKYDOWN, new Rectangle[] { new Rectangle(42, 122, 16, 16), new Rectangle(62, 122, 16, 16) });

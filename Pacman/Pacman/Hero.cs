@@ -53,5 +53,10 @@ namespace Pacman
         {
             return (pix >= 240);
         }
+
+        internal bool poweredUpEnding()
+        {
+            return (power < new TimeSpan(0, 0, 2) && power > TimeSpan.Zero);
+        }
     }
 }

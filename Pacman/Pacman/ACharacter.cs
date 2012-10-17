@@ -9,6 +9,7 @@ namespace Pacman
     abstract class ACharacter
     {
         public enum EOrientation { UP, DOWN, LEFT, RIGHT, NEUTRAL}
+        public enum EState { ALIVE, DEAD, DEAD_ENDING, FRIGHTEN, FRIGHTEN_ENDING }
         protected EOrientation orientation;
         protected Vector2 pos;
         public Sprite sp;
@@ -20,7 +21,7 @@ namespace Pacman
         private SpriteManager spm;
         protected bool intersection;
         protected EOrientation destination;
-        bool dead;
+        protected EState state;
 
         public ACharacter(SpriteManager s)
         {
@@ -33,7 +34,7 @@ namespace Pacman
             intersection = false;
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, 16, 16);
             destination = EOrientation.UP;
-            dead = false;
+            state = EState.ALIVE;
         }
 
         public void setOrientation(EOrientation ort)
@@ -82,28 +83,32 @@ namespace Pacman
         {
             if (!blocked)
             {
-                if (!dead)
+                if (state == EState.ALIVE)
                     sp.id = ortToSp[orientation];
+                else if (state == EState.FRIGHTEN)
+                    sp.id = SpriteManager.ESprite.FRIGHTGHOST;
+                else if (state == EState.FRIGHTEN_ENDING)
+                    sp.id = SpriteManager.ESprite.FRIGHT_ENDING;
                 switch (orientation)
                 {
                     case (EOrientation.LEFT):
-                        if (dead)
+                        if (state == EState.DEAD)
                             sp.id = SpriteManager.ESprite.EYES_LEFT;
                         if ((pos.X = pos.X - 1) < 0)
                             pos.X = 220;
                         break;
                     case (EOrientation.RIGHT):
-                        if (dead)
+                        if (state == EState.DEAD)
                             sp.id = SpriteManager.ESprite.EYES_RIGHT;
                         pos.X = (pos.X + 1) % 220;
                         break;
                     case (EOrientation.UP):
-                        if (dead)
+                        if (state == EState.DEAD)
                             sp.id = SpriteManager.ESprite.EYES_UP;
                         pos.Y = pos.Y - 1;
                         break;
                     case (EOrientation.DOWN):
-                        if (dead)
+                        if (state == EState.DEAD)
                             sp.id = SpriteManager.ESprite.EYES_DOWN;
                         pos.Y = pos.Y + 1;
                         break;
@@ -131,14 +136,15 @@ namespace Pacman
             destination = eOrientation;
         }
 
-        public void setDead()
+        public void setState(EState e)
         {
-            dead = true;
+            state = e;
         }
 
         internal bool isDead()
         {
-            return dead;
+            return state == EState.DEAD;
         }
+
     }
 }

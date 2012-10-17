@@ -108,6 +108,12 @@ namespace Pacman
             h.update(gt);
             foreach (ACharacter m in monsters)
             {
+                if (h.poweredUpEnding() && !m.isDead())
+                    m.setState(ACharacter.EState.FRIGHTEN_ENDING);
+                else if (h.poweredUp() && !m.isDead())
+                    m.setState(ACharacter.EState.FRIGHTEN);
+                else if (!m.isDead())
+                    m.setState(ACharacter.EState.ALIVE);
                 if (lm.directionFree(m.getX(), m.getY(), m.getOrientation()))
                     m.setBlocked(false);
                 else
@@ -115,9 +121,7 @@ namespace Pacman
                 if (m.touches(h))
                 {
                     if (h.poweredUp())
-                    {
-                        m.setDead();
-                    }
+                        m.setState(ACharacter.EState.DEAD);
                     else if (!m.isDead())
                     {
                         scm_.desactivateAll();

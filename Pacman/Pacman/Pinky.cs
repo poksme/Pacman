@@ -37,7 +37,7 @@ namespace Pacman
                     orientation = destination;
                 else
                 {
-                    while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
+                    while ((tmp = (EOrientation)rand.Next(5)) == orientation);
                     orientation = tmp;
                 }
             }
@@ -48,7 +48,7 @@ namespace Pacman
                     orientation = destination;
                 else
                 {
-                    while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
+                    while ((tmp = (EOrientation)rand.Next(5)) == orientation);
                     orientation = tmp;
                 }
             }
