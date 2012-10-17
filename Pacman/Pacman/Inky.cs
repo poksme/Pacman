@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace Pacman
 {
-    class Blinky : ACharacter
+    class Inky : ACharacter
     {
         Random rand;
         bool intersected;
-        public Blinky(SpriteManager s) : base(s)
+        public Inky(SpriteManager s)
+            : base(s)
         {
             rand = new Random();
             ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.BLINKYLEFT);
@@ -23,7 +24,7 @@ namespace Pacman
             orientation = EOrientation.LEFT;
             intersected = false;
         }
-        //RANDOM WITH INTERSECTIONS
+        //FOLLOW WITH INTERSECTIONS
         public override void update(GameTime gt)
         {
             EOrientation tmp;
@@ -31,14 +32,24 @@ namespace Pacman
             if (blocked)
             {
                 intersected = false;
-                while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
-                orientation = tmp;
+                if (orientation != destination)
+                    orientation = destination;
+                else
+                {
+                    while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
+                    orientation = tmp;
+                }
             }
             if (intersection && !intersected)
             {
-                while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
-                orientation = tmp;
                 intersected = true;
+                if (orientation != destination)
+                    orientation = destination;
+                else
+                {
+                    while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
+                    orientation = tmp;
+                }
             }
         }
     }

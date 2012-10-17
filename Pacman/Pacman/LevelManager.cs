@@ -111,5 +111,39 @@ namespace Pacman
             }
             return false;
         }
+
+        internal bool intersection(float x, float y, ACharacter.EOrientation ort)
+        {
+            int i = 0;
+                    if (!pixelIsWall(x - 5, y) &&
+                            !pixelIsWall(x - 5, y - 3) &&
+                            !pixelIsWall(x - 5, y + 3))
+                        i++;
+
+                    if (!pixelIsWall(x + 5, y) &&
+                            !pixelIsWall(x + 5, y + 3) &&
+                            !pixelIsWall(x + 5, y - 3))
+                        i++;
+
+                    if (!pixelIsWall(x, y - 5) &&
+                            !pixelIsWall(x - 3, y - 5) &&
+                            !pixelIsWall(x + 3, y - 5))
+                        i++;
+
+                    if (!pixelIsWall(x, y + 5) &&
+                            !pixelIsWall(x + 3, y + 5) &&
+                            !pixelIsWall(x - 3, y + 5))
+                        i++;
+            return (i > 2);
+        }
+
+        internal ACharacter.EOrientation getPacManDirection(Hero h, ACharacter m)
+        {
+            float x = m.getX() - h.getX(); // POSITIF == LEFT NEGATIF == RIGHT
+            float y = m.getY() - h.getY(); // POSITIF == UP NEGATIF == DOWN
+            if (Math.Abs(x) > Math.Abs(y))
+                return x > 0 ? ACharacter.EOrientation.LEFT : ACharacter.EOrientation.RIGHT;
+            return y > 0 ? ACharacter.EOrientation.UP : ACharacter.EOrientation.DOWN;
+        }
     }
 }

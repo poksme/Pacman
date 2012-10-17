@@ -18,6 +18,8 @@ namespace Pacman
         protected Boolean blocked;
         protected Rectangle hitBox;
         private SpriteManager spm;
+        protected bool intersection;
+        protected EOrientation destination;
 
         public ACharacter(SpriteManager s)
         {
@@ -27,7 +29,9 @@ namespace Pacman
             blocked = true;
             ortToSp = new Dictionary<EOrientation, SpriteManager.ESprite>();
             spm = s;
+            intersection = false;
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, 16, 16);
+            destination = EOrientation.UP;
         }
 
         public void setOrientation(EOrientation ort)
@@ -49,12 +53,6 @@ namespace Pacman
                 TotalElapsed -= TimePerFrame;
             }
         }
-        //protected void setDrawingValues()
-        //{
-        //    sp.pos.X = pos.X- 8;
-        //    sp.pos.Y = pos.Y + 16;
-        //    sp.drawn = false;
-        //}
 
         public float getX()
         {
@@ -109,6 +107,16 @@ namespace Pacman
         public Boolean touches(ACharacter o)
         {
             return hitBox.Intersects(o.hitBox);
+        }
+
+        internal void setIntersection(bool p)
+        {
+            intersection = p;
+        }
+
+        internal void setDirection(EOrientation eOrientation)
+        {
+            destination = eOrientation;
         }
     }
 }

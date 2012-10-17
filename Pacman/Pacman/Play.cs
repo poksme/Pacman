@@ -11,13 +11,6 @@ namespace Pacman
     {
         public enum EBlocks {PIX, DOOR, WALL, ENNEMY, SPAWN, EMPTY, PALLETS };
         private LevelManager lm;
-
-        #region BUTTON DECLARATION
-        //private Sprite A;
-        //private Sprite B;
-        //private Sprite X;
-        //private Sprite Y;
-        #endregion
         private Hero h;
         private ACharacter[] monsters;
         private Dictionary<ACharacter.EOrientation, ButtonState> directions;
@@ -36,15 +29,10 @@ namespace Pacman
             directions.Add(ACharacter.EOrientation.DOWN, ButtonState.Released);
             directions.Add(ACharacter.EOrientation.LEFT, ButtonState.Released);
             directions.Add(ACharacter.EOrientation.RIGHT, ButtonState.Released);
-            #region BUTTONS
-            //A = new Sprite(new Vector2(200, 200), SpriteManager.ESprite.A);
-            //B = new Sprite(new Vector2(220, 200), SpriteManager.ESprite.B);
-            //X = new Sprite(new Vector2(240, 200), SpriteManager.ESprite.X);
-            //Y = new Sprite(new Vector2(260, 200), SpriteManager.ESprite.Y);
-            #endregion
             h = new Hero(spm_);
             monsters = new ACharacter[] {
-                new Blinky(spm_)
+                new Blinky(spm_),
+                new Inky(spm_)
             };
             monsters[0].setBlocked(false);
         }
@@ -128,6 +116,8 @@ namespace Pacman
                         scm_.activateScene(SceneManager.EScene.TITLE);
                     }
                 }
+                    m.setIntersection(lm.intersection(m.getX(), m.getY(), m.getOrientation()));
+                    m.setDirection(lm.getPacManDirection(h, m));
             
                 m.update(gt);
             }
