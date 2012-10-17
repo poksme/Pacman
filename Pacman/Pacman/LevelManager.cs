@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Pacman 
 {
     class LevelManager
     {
         private char[][] maze;
-
         public LevelManager()
         {
             try

@@ -51,7 +51,7 @@ namespace Pacman
             // Create a new SpriteBatch, which can be used to draw textures.
             try
             {
-                sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content, graphics.GraphicsDevice));
+                sm = new SceneManager(new SpriteManager(new SpriteBatch(GraphicsDevice), Content, graphics.GraphicsDevice), new SoundManager(Content));
             }
             catch (Exception e)
             {

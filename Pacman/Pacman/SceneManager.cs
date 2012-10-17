@@ -15,9 +15,10 @@ namespace Pacman
         //VARS
         private Dictionary <EScene, AScene> scenes;
         private SpriteManager spm_;
+        private SoundManager som_;
         private bool exit_;
 
-        public SceneManager(SpriteManager spm)
+        public SceneManager(SpriteManager spm, SoundManager som)
         {
             scenes = new Dictionary<EScene,AScene>();
             scenes.Add(EScene.LEVEL, new Play(this, spm));
@@ -25,7 +26,8 @@ namespace Pacman
             scenes.Add(EScene.LEGEND, new Legend(this, spm));
             scenes.Add(EScene.TITLE, new TitleScreen(this, spm));
             spm_ = spm;
-            scenes[EScene.TITLE].activate();
+            som_ = som;
+            activateScene(EScene.TITLE);
             exit_ = false;
             //scenes[EScene.LEVEL].activate();
             //scenes[EScene.LEGEND].activate();
@@ -51,6 +53,8 @@ namespace Pacman
             if (e == EScene.LEVEL)
                 scenes[EScene.LEGEND].activate();
             scenes[e].activate();
+            if (e == EScene.TITLE)
+                som_.play(SoundManager.ESound.BEGIN);
         }
 
         public void desactivateScene(EScene e)
