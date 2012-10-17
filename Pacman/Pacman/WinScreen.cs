@@ -8,13 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pacman
 {
-    class Pause : AScene
+    class WinScreen : AScene
     {
-        private Vector2 textPos;
-
-        public Pause(SceneManager sm, SpriteManager spm) : base(sm, spm)
+                private Vector2 textPos;
+                private SceneManager sm_;
+        public WinScreen(SceneManager sm, SpriteManager spm) : base(sm, spm)
         {
             lastState = GamePad.GetState(PlayerIndex.One);
+            sm_ = sm;
         }
 
         public override void load()
@@ -28,11 +29,6 @@ namespace Pacman
 
             if (currentState.IsConnected)
             {
-                if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
-                {
-                    scm_.desactivateAll();
-                    scm_.activateScene(SceneManager.EScene.LEVEL);
-                }
                 if (currentState.Buttons.B == ButtonState.Pressed && lastState.Buttons.B == ButtonState.Released)
                 {
                     scm_.desactivateAll();
@@ -43,7 +39,6 @@ namespace Pacman
                 {
                     scm_.desactivateAll();
                     scm_.exit();
-                    //scm_.activateScene(SceneManager.EScene.TITLE);
                 }
             }
             lastState = currentState;
@@ -51,15 +46,15 @@ namespace Pacman
 
         public override void draw()
         {
-            spm_.centerDrawText("Pause!", 0, -40);
+            spm_.centerDrawText("Congratulation you won! Your score is " + sm_.getBonus() + " points!", 0, -40);
 
-            textPos = spm_.getCenter();
-            textPos.X -= 90;
-            textPos.Y += 10;
-            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos);
-            textPos.X += 40;
-            textPos.Y += 10;
-            spm_.drawText("Resume", textPos);
+            //textPos = spm_.getCenter();
+            //textPos.X -= 90;
+            //textPos.Y += 10;
+            //spm_.vanillaDraw(SpriteManager.ESprite.START, textPos);
+            //textPos.X += 40;
+            //textPos.Y += 10;
+            //spm_.drawText("Resume", textPos);
 
             textPos = spm_.getCenter();
             textPos.X -= 90;
@@ -76,6 +71,27 @@ namespace Pacman
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Exit (to windows)", textPos);
+
+
+            //textPos.X = 10;
+            //textPos.Y += 40;
+            //spm_.vanillaDraw(SpriteManager.ESprite.A, textPos);
+            //textPos.X += 40;
+            //textPos.Y += 10;
+            //spm_.drawText("Zoom out", textPos);
+
+            //textPos.X = 10;
+            //textPos.Y += 40;
+            //spm_.vanillaDraw(SpriteManager.ESprite.B, textPos);
+            //textPos.X += 40;
+            //textPos.Y += 10;
+            //spm_.drawText("Zoom in", textPos);
+
+            //textPos.X = 10;
+            //textPos.Y += 40;
+            //spm_.vanillaDraw(SpriteManager.ESprite.Y, textPos);
+            //textPos.X += 40;
+            //textPos.Y += 10;
         }
 
         public override void unload()

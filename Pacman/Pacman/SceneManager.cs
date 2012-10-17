@@ -10,7 +10,7 @@ namespace Pacman
     class SceneManager
     {
         //DEFINITION
-        public enum EScene {TITLE, LEGEND, LEVEL, PAUSE };
+        public enum EScene {TITLE, LEGEND, LEVEL, PAUSE, WIN };
 
         //VARS
         private Dictionary <EScene, AScene> scenes;
@@ -25,6 +25,7 @@ namespace Pacman
             scenes.Add(EScene.PAUSE, new Pause(this, spm));
             scenes.Add(EScene.LEGEND, new Legend(this, spm));
             scenes.Add(EScene.TITLE, new TitleScreen(this, spm));
+            scenes.Add(EScene.WIN, new WinScreen(this, spm));
             spm_ = spm;
             som_ = som;
             activateScene(EScene.TITLE);

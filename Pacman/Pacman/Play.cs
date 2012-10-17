@@ -78,23 +78,11 @@ namespace Pacman
             {
                 #region BUTTONSTATE
                 if (currentState.Buttons.A == ButtonState.Pressed)
-                {
-                    //A.drawn = false;
                     spm_.zoomOut();
-                }
                 if (currentState.Buttons.B == ButtonState.Pressed)
-                {
-                    //B.drawn = false;
                     spm_.zoomIn();
-                }
-                //if (currentState.Buttons.X == ButtonState.Pressed)
-                //{
-                //    X.drawn = false;
-                //}
                 if (currentState.Buttons.Y == ButtonState.Pressed && lastState.Buttons.Y == ButtonState.Released)
-                {
                     spm_.toggleFollow();
-                }
                 #endregion
                 if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
                 {
@@ -135,6 +123,11 @@ namespace Pacman
                 m.update(gt);
             }
             spm_.update(h);
+            if (h.won())
+            {
+                scm_.desactivateAll();
+                scm_.activateScene(SceneManager.EScene.WIN);
+            }
         }
 
         private void drawMap()
