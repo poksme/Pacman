@@ -8,143 +8,125 @@ namespace Pacman
 {
     abstract class ACharacter
     {
+        #region DECLARATIONS
         public enum EOrientation { UP, DOWN, LEFT, RIGHT, NEUTRAL}
-        public enum EState { ALIVE, DEAD, DEAD_ENDING, FRIGHTEN, FRIGHTEN_ENDING }
-        protected EOrientation orientation;
-        protected Vector2 pos;
-        public Sprite sp;
-        protected TimeSpan TotalElapsed;
-        protected TimeSpan TimePerFrame;
-        protected Dictionary<ACharacter.EOrientation, SpriteManager.ESprite> ortToSp;
-        protected Boolean blocked;
-        protected Rectangle hitBox;
-        private SpriteManager spm;
-        protected bool intersection;
-        protected EOrientation destination;
-        protected EState state;
 
-        public ACharacter(SpriteManager s)
-        {
-            orientation = EOrientation.NEUTRAL;
-            TotalElapsed = new TimeSpan();
-            TimePerFrame = new TimeSpan(1000000);
-            blocked = true;
-            ortToSp = new Dictionary<EOrientation, SpriteManager.ESprite>();
-            spm = s;
-            intersection = false;
-            hitBox = new Rectangle((int)pos.X, (int)pos.Y, 16, 16);
-            destination = EOrientation.UP;
-            state = EState.ALIVE;
-        }
+        private SpriteManager spriteManager_;
+        
+        protected EOrientation orientation_;
+        protected EOrientation destination_;
+        protected Vector2 position_;
 
-        public void setOrientation(EOrientation ort)
-        {
-            orientation = ort;
-        }
+        protected Sprite sprite_;
 
-        public EOrientation getOrientation()
-        {
-            return orientation;
-        }
+        protected TimeSpan totalElapsedTime_;
+        protected TimeSpan elapsedTime_;
+        protected TimeSpan timePerFrame_;
 
-        private void animate(GameTime gt)
-        {
-            TotalElapsed += gt.ElapsedGameTime;
-            if (TotalElapsed > TimePerFrame)
-            {
-                sp.step = (sp.step + 1) % 2;
-                TotalElapsed -= TimePerFrame;
-            }
-        }
+        protected Rectangle hitBox_;
 
-        public float getX()
-        {
-            return pos.X;
-        }
-        public float getY()
-        {
-            return pos.Y;
-        }
+        protected bool atIntersection_;
+        protected bool blocked_;
 
-        public void setBlocked(Boolean b)
-        {
-            blocked = b;
-        }
+        private float speedPerSec_;
 
-        virtual public void draw()
-        {
-            sp.pos.X = pos.X - 8;
-            sp.pos.Y = pos.Y + 16;
-            sp.drawn = false;
-            spm.drawSprite(sp);
-        }
+        protected Dictionary<ACharacter.EOrientation, SpriteManager.ESprite> orientationToSprite_;
+        #endregion
 
+        public ACharacter(SpriteManager s, EOrientation e)
+        {
+            orientation_ = EOrientation.NEUTRAL;
+            totalElapsedTime_ = new TimeSpan();
+            timePerFrame_ = new TimeSpan(1000000);
+            blocked_ = true;
+            orientationToSprite_ = new Dictionary<EOrientation, SpriteManager.ESprite>();
+            spriteManager_ = s;
+            atIntersection_ = false;
+            hitBox_ = new Rectangle((int)position_.X + 4, (int)position_.Y + 4, 12, 12);
+            destination_ = e;
+            speedPerSec_ = 60;
+        }
         virtual public void update(GameTime gt)
         {
-            if (!blocked)
+            float padding;
+
+            padding = speedPerSec_ * (float)elapsedTime_.TotalSeconds;
+            if (!blocked_)
             {
-                if (state == EState.ALIVE)
-                    sp.id = ortToSp[orientation];
-                else if (state == EState.FRIGHTEN)
-                    sp.id = SpriteManager.ESprite.FRIGHTGHOST;
-                else if (state == EState.FRIGHTEN_ENDING)
-                    sp.id = SpriteManager.ESprite.FRIGHT_ENDING;
-                switch (orientation)
+                switch (orientation_)
                 {
                     case (EOrientation.LEFT):
-                        if (state == EState.DEAD)
-                            sp.id = SpriteManager.ESprite.EYES_LEFT;
-                        if ((pos.X = pos.X - 1) < 0)
-                            pos.X = 220;
+                        if ((position_.X = position_.X - padding) < 0)
+                            position_.X = 220;
                         break;
                     case (EOrientation.RIGHT):
-                        if (state == EState.DEAD)
-                            sp.id = SpriteManager.ESprite.EYES_RIGHT;
-                        pos.X = (pos.X + 1) % 220;
+                        position_.X = (position_.X + padding) % 220;
                         break;
                     case (EOrientation.UP):
-                        if (state == EState.DEAD)
-                            sp.id = SpriteManager.ESprite.EYES_UP;
-                        pos.Y = pos.Y - 1;
+                        position_.Y = position_.Y - padding;
                         break;
                     case (EOrientation.DOWN):
-                        if (state == EState.DEAD)
-                            sp.id = SpriteManager.ESprite.EYES_DOWN;
-                        pos.Y = pos.Y + 1;
+                        position_.Y = position_.Y + padding;
                         break;
                     default:
                         break;
                 }
-                animate(gt);
             }
-            hitBox.X = (int)pos.X;
-            hitBox.Y = (int)pos.Y;
+            sprite_.id = orientationToSprite_[orientation_];
+            if (!((this is Hero) && blocked_))
+                animate(gt);
+            hitBox_.X = (int)position_.X + 4;
+            hitBox_.Y = (int)position_.Y + 4;
         }
-
-        public Boolean touches(ACharacter o)
+        virtual public void draw()
         {
-            return hitBox.Intersects(o.hitBox);
+            sprite_.pos.X = position_.X - 8;
+            sprite_.pos.Y = position_.Y + 16;
+            sprite_.drawn = false;
+            spriteManager_.drawSpriteScreenScaled(sprite_);
         }
 
-        internal void setIntersection(bool p)
+        private void animate(GameTime gt)
         {
-            intersection = p;
+            elapsedTime_ = gt.ElapsedGameTime;
+            totalElapsedTime_ += elapsedTime_;
+            if (totalElapsedTime_ > timePerFrame_)
+            {
+                sprite_.step = (sprite_.step + 1) % 2;
+                totalElapsedTime_ -= timePerFrame_;
+            }
         }
-
-        internal void setDirection(EOrientation eOrientation)
+        public void setOrientation(EOrientation ort)
         {
-            destination = eOrientation;
+            orientation_ = ort;
         }
-
-        public void setState(EState e)
+        public EOrientation getOrientation()
         {
-            state = e;
+            return orientation_;
         }
-
-        internal bool isDead()
+        public float getX()
         {
-            return state == EState.DEAD;
+            return position_.X;
         }
-
+        public float getY()
+        {
+            return position_.Y;
+        }
+        public void setBlocked(Boolean b)
+        {
+            blocked_ = b;
+        }
+        public bool isTouching(ACharacter o)
+        {
+            return hitBox_.Intersects(o.hitBox_);
+        }
+        public void setIntersection(bool p)
+        {
+            atIntersection_ = p;
+        }
+        public void setDestination(EOrientation eOrientation)
+        {
+            destination_ = eOrientation;
+        }
     }
 }

@@ -6,40 +6,38 @@ using Microsoft.Xna.Framework;
 
 namespace Pacman
 {
-    class Clyde : ACharacter
+    class Clyde : AEnnemy
     {
-        Random rand;
+        //Random rand;
         bool intersected;
         public Clyde(SpriteManager s)
-            : base(s)
+            : base(s, EOrientation.DOWN)
         {
-            rand = new Random();
-            ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.CLYDELEFT);
-            ortToSp.Add(EOrientation.RIGHT, SpriteManager.ESprite.CLYDERIGHT);
-            ortToSp.Add(EOrientation.UP, SpriteManager.ESprite.CLYDEUP);
-            ortToSp.Add(EOrientation.DOWN, SpriteManager.ESprite.CLYDEDOWN);
-            ortToSp.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.FRIGHTGHOST);
-            pos = new Vector2(145, 140);
-            sp = new Sprite(pos, ortToSp[orientation]);
-            orientation = EOrientation.LEFT;
+            orientationToSprite_.Add(EOrientation.LEFT, SpriteManager.ESprite.CLYDELEFT);
+            orientationToSprite_.Add(EOrientation.RIGHT, SpriteManager.ESprite.CLYDERIGHT);
+            orientationToSprite_.Add(EOrientation.UP, SpriteManager.ESprite.CLYDEUP);
+            orientationToSprite_.Add(EOrientation.DOWN, SpriteManager.ESprite.CLYDEDOWN);
+            orientationToSprite_.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.CLYDEDOWN);
+            position_ = new Vector2(137, 140);
+            sprite_ = new Sprite(position_, orientationToSprite_[orientation_]);
+            orientation_ = EOrientation.RIGHT;
             intersected = false;
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gt)
+        public override void IA()
         {
             //RANDOM WITH INTERSECTIONS
             EOrientation tmp;
-            base.update(gt);
-            if (blocked)
+            if (blocked_)
             {
                 intersected = false;
-                while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
-                orientation = tmp;
+                while ((tmp = (EOrientation)random_.Next(5)) == orientation_ || tmp == EOrientation.NEUTRAL) ;
+                orientation_ = tmp;
             }
-            if (intersection && !intersected)
+            if (atIntersection_ && !intersected)
             {
-                while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
-                orientation = tmp;
+                while ((tmp = (EOrientation)random_.Next(5)) == orientation_ || tmp == EOrientation.NEUTRAL) ;
+                orientation_ = tmp;
                 intersected = true;
             }
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework.Audio;
 
@@ -19,15 +18,11 @@ namespace Pacman
             {
                 System.IO.Stream stream = TitleContainer.OpenStream("map.txt");
                 System.IO.StreamReader sr = new System.IO.StreamReader(stream);
-                //StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Pacman.map.txt"));
-                
-                    String[] tmp = Regex.Split(sr.ReadToEnd(), Environment.NewLine);
-                    maze = new char[tmp.Length][];
-                    for (int i = 0; i < tmp.Length; ++i)
-                        maze[i] = tmp[i].ToCharArray();
-
-                    sr.Close();
-                
+                String[] tmp = Regex.Split(sr.ReadToEnd(), Environment.NewLine);
+                maze = new char[tmp.Length][];
+                for (int i = 0; i < tmp.Length; ++i)
+                    maze[i] = tmp[i].ToCharArray();
+                sr.Close();                
             }
             catch (Exception e)
             {
@@ -146,9 +141,9 @@ namespace Pacman
 
         internal ACharacter.EOrientation getPacManDirection(Hero h, ACharacter m)
         {
-            float x = m.getX() - h.getX(); // POSITIF == LEFT NEGATIF == RIGHT
-            float y = m.getY() - h.getY(); // POSITIF == UP NEGATIF == DOWN
-            if (Math.Abs(x) > Math.Abs(y))
+            int x = (int)(m.getX() - h.getX() / 8); // POSITIF == LEFT NEGATIF == RIGHT
+            int y = (int)(m.getY() - h.getY() / 8); // POSITIF == UP NEGATIF == DOWN
+            if (Math.Abs(x) < Math.Abs(y))
                 return x > 0 ? ACharacter.EOrientation.LEFT : ACharacter.EOrientation.RIGHT;
             return y > 0 ? ACharacter.EOrientation.UP : ACharacter.EOrientation.DOWN;
         }
@@ -161,6 +156,32 @@ namespace Pacman
                 return true;
             }
             return false;
+        }
+
+        internal void setFreeDirections(AEnnemy m)
+        {
+            float x = m.getX();
+            float y = m.getY();
+
+            m.resetFreePath();
+            if (!pixelIsWall(x - 5, y) &&
+                !pixelIsWall(x - 5, y - 3) &&
+                !pixelIsWall(x - 5, y + 3))
+               m.setFreePath(ACharacter.EOrientation.LEFT);
+            if (!pixelIsWall(x + 5, y) &&
+                            !pixelIsWall(x + 5, y + 3) &&
+                            !pixelIsWall(x + 5, y - 3))
+               m.setFreePath(ACharacter.EOrientation.RIGHT);
+
+                    if (!pixelIsWall(x, y - 5) &&
+                            !pixelIsWall(x - 3, y - 5) &&
+                            !pixelIsWall(x + 3, y - 5))
+               m.setFreePath(ACharacter.EOrientation.UP);
+
+                    if (!pixelIsWall(x, y + 5) &&
+                            !pixelIsWall(x + 3, y + 5) &&
+                            !pixelIsWall(x - 3, y + 5))
+                        m.setFreePath(ACharacter.EOrientation.DOWN);
         }
     }
 }

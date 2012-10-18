@@ -35,31 +35,31 @@ namespace Pacman
 
             textPos.X = 10;
             textPos.Y = 10;
-            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.START, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Pause", textPos);
 
             textPos.X = 10;
             textPos.Y += 40;
-            spm_.vanillaDraw(SpriteManager.ESprite.A, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.A, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Zoom out", textPos);
 
             textPos.X = 10;
             textPos.Y += 40;
-            spm_.vanillaDraw(SpriteManager.ESprite.B, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.B, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Zoom in", textPos);
 
             textPos.X = 10;
             textPos.Y += 40;
-            spm_.vanillaDraw(SpriteManager.ESprite.Y, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.Y, textPos);
             textPos.X += 40;
             textPos.Y += 10;
-            if (spm_.isFollowing())
+            if (spm_.isHeroCentered())
                 spm_.drawText("Unfollow", textPos);
             else
                 spm_.drawText("Follow", textPos);

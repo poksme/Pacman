@@ -26,12 +26,12 @@ namespace Pacman
     {
         return activated;
     }
-    public void activate()
+    virtual public void activate()
     {
         activated = true;
     }
 
-    public void desactivate()
+    virtual public void desactivate()
     {
         activated = false;
     }

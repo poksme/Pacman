@@ -6,50 +6,47 @@ using Microsoft.Xna.Framework;
 
 namespace Pacman
 {
-    class Pinky : ACharacter
+    class Pinky : AEnnemy
     {
-        protected Random rand;
         protected bool intersected;
         public Pinky(SpriteManager s)
-            : base(s)
+            : base(s, EOrientation.RIGHT)
         {
-            rand = new Random();
-            ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.PINKYLEFT);
-            ortToSp.Add(EOrientation.RIGHT, SpriteManager.ESprite.PINKYRIGHT);
-            ortToSp.Add(EOrientation.UP, SpriteManager.ESprite.PINKYUP);
-            ortToSp.Add(EOrientation.DOWN, SpriteManager.ESprite.PINKYDOWN);
-            ortToSp.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.FRIGHTGHOST);
-            pos = new Vector2(113, 140);
-            sp = new Sprite(pos, ortToSp[orientation]);
-            orientation = EOrientation.LEFT;
+            orientationToSprite_.Add(EOrientation.LEFT, SpriteManager.ESprite.PINKYLEFT);
+            orientationToSprite_.Add(EOrientation.RIGHT, SpriteManager.ESprite.PINKYRIGHT);
+            orientationToSprite_.Add(EOrientation.UP, SpriteManager.ESprite.PINKYUP);
+            orientationToSprite_.Add(EOrientation.DOWN, SpriteManager.ESprite.PINKYDOWN);
+            orientationToSprite_.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.PINKYRIGHT);
+            position_ = new Vector2(105, 140);
+            sprite_ = new Sprite(position_, orientationToSprite_[orientation_]);
+            orientation_ = EOrientation.LEFT;
             intersected = false;
         }
 
         //FOLLOW WITH INTERSECTIONS
-        public override void update(GameTime gt)
+        public override void IA()
         {
             EOrientation tmp;
-            base.update(gt);
-            if (blocked)
+            if (blocked_)
             {
                 intersected = false;
-                if (orientation != destination)
-                    orientation = destination;
+                if (orientation_ != destination_)
+                    orientation_ = destination_;
                 else
                 {
-                    while ((tmp = (EOrientation)rand.Next(5)) == orientation);
-                    orientation = tmp;
+                    while ((tmp = (EOrientation)random_.Next(5)) == orientation_) ;
+                    orientation_ = tmp;
                 }
             }
-            if (intersection && !intersected)
+            if (atIntersection_ && !intersected)
             {
                 intersected = true;
-                if (orientation != destination)
-                    orientation = destination;
+                if (orientation_ != destination_ && freePath_[destination_])
+                    orientation_ = destination_;
                 else
                 {
-                    while ((tmp = (EOrientation)rand.Next(5)) == orientation);
-                    orientation = tmp;
+                    while (!freePath_[(tmp = (EOrientation)random_.Next(5))]);
+                    orientation_ = tmp;
                 }
             }
         }

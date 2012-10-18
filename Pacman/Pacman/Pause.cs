@@ -12,9 +12,23 @@ namespace Pacman
     {
         private Vector2 textPos;
 
+        bool recent;
         public Pause(SceneManager sm, SpriteManager spm, SoundManager som)
             : base(sm, spm, som)
         {
+            recent = false;
+        }
+
+        public override void activate()
+        {
+            base.activate();
+            som_.play(SoundManager.ESound.PAUSE);
+            recent = true;
+        }
+
+        public override void desactivate()
+        {
+            base.desactivate();
         }
 
         public override void load()
@@ -29,8 +43,9 @@ namespace Pacman
             //lastState = old;
             if (currentState.IsConnected)
             {
-                if (currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
+                if (!recent && currentState.Buttons.Start == ButtonState.Pressed && lastState.Buttons.Start == ButtonState.Released)
                 {
+                    som_.play(SoundManager.ESound.PAUSE, -0.2f);
                     scm_.desactivateAll();
                     scm_.activateScene(SceneManager.EScene.LEVEL);
                 }
@@ -47,16 +62,17 @@ namespace Pacman
                 }
             }
             lastState = currentState;
+            recent = false;
         }
 
         public override void draw()
         {
-            spm_.centerDrawText("Pause!", 0, -40);
+            spm_.drawCenteredText("Pause!", 0, -40);
 
             textPos = spm_.getCenter();
             textPos.X -= 90;
             textPos.Y += 10;
-            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.START, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Resume", textPos);
@@ -64,7 +80,7 @@ namespace Pacman
             textPos = spm_.getCenter();
             textPos.X -= 90;
             textPos.Y += 50;
-            spm_.vanillaDraw(SpriteManager.ESprite.B, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.B, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Exit (to title screen)", textPos);
@@ -72,7 +88,7 @@ namespace Pacman
             textPos = spm_.getCenter();
             textPos.X -= 90;
             textPos.Y += 90;
-            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos, SpriteEffects.FlipHorizontally);
+            spm_.drawSprite(SpriteManager.ESprite.START, textPos, SpriteEffects.FlipHorizontally);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Exit (to windows)", textPos);

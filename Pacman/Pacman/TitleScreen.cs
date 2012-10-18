@@ -41,6 +41,8 @@ namespace Pacman
         public override void draw()
         {
             spm_.drawTitle();
+            spm_.drawCenteredText("Use a Controller and Press start button", 0, 200);
+            spm_.drawCenteredText("Original game by NAMCO - Remix by Poksme!", 0, 100);
         }
 
         public override void unload()

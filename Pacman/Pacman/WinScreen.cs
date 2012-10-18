@@ -48,7 +48,7 @@ namespace Pacman
 
         public override void draw()
         {
-            spm_.centerDrawText("Congratulation you won! Your score is " + sm_.getBonus() + " points!", 0, -40);
+            spm_.drawCenteredText("Congratulation you won! Your score is " + sm_.getBonus() + " points!", 0, -40);
 
             //textPos = spm_.getCenter();
             //textPos.X -= 90;
@@ -61,7 +61,7 @@ namespace Pacman
             textPos = spm_.getCenter();
             textPos.X -= 90;
             textPos.Y += 50;
-            spm_.vanillaDraw(SpriteManager.ESprite.B, textPos);
+            spm_.drawSprite(SpriteManager.ESprite.B, textPos);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Exit (to title screen)", textPos);
@@ -69,7 +69,7 @@ namespace Pacman
             textPos = spm_.getCenter();
             textPos.X -= 90;
             textPos.Y += 90;
-            spm_.vanillaDraw(SpriteManager.ESprite.START, textPos, SpriteEffects.FlipHorizontally);
+            spm_.drawSprite(SpriteManager.ESprite.START, textPos, SpriteEffects.FlipHorizontally);
             textPos.X += 40;
             textPos.Y += 10;
             spm_.drawText("Exit (to windows)", textPos);

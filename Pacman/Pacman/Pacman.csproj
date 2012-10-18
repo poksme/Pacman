@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AEnnemy.cs" />
     <Compile Include="AScene.cs" />
     <Compile Include="ACharacter.cs" />
     <Compile Include="Blinky.cs" />

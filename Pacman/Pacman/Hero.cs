@@ -11,20 +11,20 @@ namespace Pacman
         private TimeSpan power;
         private int pix = 0;
         private int bonus = 0;
-        public Hero(SpriteManager s):base(s)
+        public Hero(SpriteManager s):base(s, EOrientation.NEUTRAL)
         {
-            ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.PACLEFT);
-            ortToSp.Add(EOrientation.RIGHT, SpriteManager.ESprite.PACRIGHT);
-            ortToSp.Add(EOrientation.UP, SpriteManager.ESprite.PACUP);
-            ortToSp.Add(EOrientation.DOWN, SpriteManager.ESprite.PACDOWN);
-            ortToSp.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.PACNEUTRAL);
-            pos = new Vector2(113, 92);
-            sp = new Sprite(pos, ortToSp[orientation]);
+            orientationToSprite_.Add(EOrientation.LEFT, SpriteManager.ESprite.PACLEFT);
+            orientationToSprite_.Add(EOrientation.RIGHT, SpriteManager.ESprite.PACRIGHT);
+            orientationToSprite_.Add(EOrientation.UP, SpriteManager.ESprite.PACUP);
+            orientationToSprite_.Add(EOrientation.DOWN, SpriteManager.ESprite.PACDOWN);
+            orientationToSprite_.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.PACNEUTRAL);
+            position_ = new Vector2(113, 92);
+            sprite_ = new Sprite(position_, orientationToSprite_[orientation_]);
             power = new TimeSpan(0);
         }
 
         public bool poweredUp()
-        {
+        {          
             return (power.Ticks > 0);
         }
 
@@ -37,12 +37,22 @@ namespace Pacman
         public override void update(GameTime gt)
         {
             base.update(gt);
-            power -= gt.ElapsedGameTime;
+            power -= elapsedTime_;
         }
 
-        internal void addBonus()
+        public override void draw()
         {
-            bonus += 100;
+            base.draw();
+        }
+
+        public void addBonus(int b = 100)
+        {
+            bonus += b;
+        }
+
+        internal void eatPallet()
+        {
+            addBonus();
             pix += 1;
         }
         public int getBonus()

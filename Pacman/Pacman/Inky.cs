@@ -6,36 +6,34 @@ using Microsoft.Xna.Framework;
 
 namespace Pacman
 {
-    class Inky : ACharacter
+    class Inky : AEnnemy
     {
-        protected Random rand;
+        //protected Random rand;
         public Inky(SpriteManager s)
-            : base(s)
+            : base(s, EOrientation.UP)
         {
-            rand = new Random();
-            ortToSp.Add(EOrientation.LEFT, SpriteManager.ESprite.INKYLEFT);
-            ortToSp.Add(EOrientation.RIGHT, SpriteManager.ESprite.INKYRIGHT);
-            ortToSp.Add(EOrientation.UP, SpriteManager.ESprite.INKYUP);
-            ortToSp.Add(EOrientation.DOWN, SpriteManager.ESprite.INKYDOWN);
-            ortToSp.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.FRIGHTGHOST);
-            pos = new Vector2(97, 140);
-            sp = new Sprite(pos, ortToSp[orientation]);
-            orientation = EOrientation.LEFT;
+            orientationToSprite_.Add(EOrientation.LEFT, SpriteManager.ESprite.INKYLEFT);
+            orientationToSprite_.Add(EOrientation.RIGHT, SpriteManager.ESprite.INKYRIGHT);
+            orientationToSprite_.Add(EOrientation.UP, SpriteManager.ESprite.INKYUP);
+            orientationToSprite_.Add(EOrientation.DOWN, SpriteManager.ESprite.INKYDOWN);
+            orientationToSprite_.Add(EOrientation.NEUTRAL, SpriteManager.ESprite.INKYUP);
+            position_ = new Vector2(89, 140);
+            sprite_ = new Sprite(position_, orientationToSprite_[orientation_]);
+            orientation_ = EOrientation.LEFT;
         }
 
         //FOLLOW WITHOUT INTERSECTIONS
-        public override void update(GameTime gt)
+        public override void IA()
         {
             EOrientation tmp;
-            base.update(gt);
-            if (blocked)
+            if (blocked_)
             {
-                if (orientation != destination)
-                    orientation = destination;
+                if (orientation_ != destination_)
+                    orientation_ = destination_;
                 else
                 {
-                    while ((tmp = (EOrientation)rand.Next(5)) == orientation || tmp == EOrientation.NEUTRAL) ;
-                    orientation = tmp;
+                    while ((tmp = (EOrientation)random_.Next(5)) == orientation_ || tmp == EOrientation.NEUTRAL) ;
+                    orientation_ = tmp;
                 }
             }
         }
