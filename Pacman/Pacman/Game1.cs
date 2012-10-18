@@ -86,7 +86,7 @@ namespace Pacman
             if (this.isExiting || sm.isExiting())
                 this.Exit();
             else
-                sm.update(gameTime);
+                sm.update(gameTime); 
         }
 
         //protected void OnExitingUp(object sender, EventArgs args)

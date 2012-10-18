@@ -127,7 +127,6 @@
     <Compile Include="Clyde.cs" />
     <Compile Include="Hero.cs" />
     <Compile Include="Inky.cs" />
-    <Compile Include="InputManager.cs" />
     <Compile Include="Legend.cs" />
     <Compile Include="Pinky.cs" />
     <Compile Include="Play.cs" />
