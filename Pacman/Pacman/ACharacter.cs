@@ -42,7 +42,7 @@ namespace Pacman
             orientationToSprite_ = new Dictionary<EOrientation, SpriteManager.ESprite>();
             spriteManager_ = s;
             atIntersection_ = false;
-            hitBox_ = new Rectangle((int)position_.X + 4, (int)position_.Y + 4, 12, 12);
+            hitBox_ = new Rectangle((int)position_.X + 4, (int)position_.Y + 4, 8, 8);
             destination_ = e;
             speedPerSec_ = 60;
         }

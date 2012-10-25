@@ -141,9 +141,9 @@ namespace Pacman
 
         internal ACharacter.EOrientation getPacManDirection(Hero h, ACharacter m)
         {
-            int x = (int)(m.getX() - h.getX() / 8); // POSITIF == LEFT NEGATIF == RIGHT
-            int y = (int)(m.getY() - h.getY() / 8); // POSITIF == UP NEGATIF == DOWN
-            if (Math.Abs(x) < Math.Abs(y))
+            int x = (int)((m.getX() - h.getX()) / 8); // POSITIF == LEFT NEGATIF == RIGHT
+            int y = (int)((m.getY() - h.getY()) / 8); // POSITIF == UP NEGATIF == DOWN
+            if (Math.Abs(x) > Math.Abs(y))
                 return x > 0 ? ACharacter.EOrientation.LEFT : ACharacter.EOrientation.RIGHT;
             return y > 0 ? ACharacter.EOrientation.UP : ACharacter.EOrientation.DOWN;
         }
